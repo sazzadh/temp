@@ -307,6 +307,13 @@ if ( ! class_exists('cs_job_plugin_functions') ) {
                 'icon' => 'icon-table',
                 'categories' => 'loops misc',
             );
+            
+            $shortcode_array['listing_tab'] = array(
+                'title' => esc_html__('JC : Listing Tab', 'jobhunt'),
+                'name' => 'listing_tab',
+                'icon' => 'icon-table',
+                'categories' => 'loops misc',
+            );
 
             $job_specialisms_label = esc_html__('Job Specialisms', 'jobhunt');
             $job_specialisms_label = apply_filters('jobhunt_replace_job_specialisms_to_job_categories', $job_specialisms_label);

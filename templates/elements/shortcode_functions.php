@@ -104,11 +104,11 @@ if ( ! function_exists('cs_element_setting') ) {
             $icon_skip_array = array( "multi_counters", "spacer" );
             if ( ! in_array($elm_name, $icon_skip_array) ) {
                 ?>
-            <a class="decrement" onclick="javascript:decrement(this)"><i class="icon-minus4"></i></a> &nbsp;
-            <a class="increment" onclick="javascript:increment(this)"><i class="icon-plus3"></i></a>
-             <?php } ?>
+                <a class="decrement" onclick="javascript:decrement(this)"><i class="icon-minus4"></i></a> &nbsp;
+                <a class="increment" onclick="javascript:increment(this)"><i class="icon-plus3"></i></a>
+                <?php } ?>
             <span> 
-                <?php $element_icon = apply_filters( 'jobcareer_shortcode_icon', 'cs-icon '.str_replace("jobcareer_pb_", "", $name).'-icon', $name ); ?>
+                <?php $element_icon = apply_filters('jobcareer_shortcode_icon', 'cs-icon ' . str_replace("jobcareer_pb_", "", $name) . '-icon', $name); ?>
                 <i class="<?php echo $element_icon; ?>"></i>
                 <strong><?php
                     if ( isset($element_list['element_list'][$elm_name]) ) {
@@ -130,21 +130,23 @@ if ( ! function_exists('cs_element_list') ) {
 
     function cs_element_list() {
         $element_list = array();
-		
-		$job_specialisms_label = esc_html__('Job specialisms', 'jobhunt');
-		$job_specialisms_label = apply_filters( 'jobhunt_replace_job_specialisms_to_job_categories', $job_specialisms_label );
-		
+
+        $job_specialisms_label = esc_html__('Job specialisms', 'jobhunt');
+        $job_specialisms_label = apply_filters('jobhunt_replace_job_specialisms_to_job_categories', $job_specialisms_label);
+
         $element_list['element_list'] = array(
             'register' => esc_html__('Register', 'jobhunt'),
             'cv_package' => esc_html__('CV Package', 'jobhunt'),
             'cv package' => esc_html__('CV Package', 'jobhunt'),
             'job_package' => esc_html__('Job Package', 'jobhunt'),
-			'membership_package' => esc_html__('Apply Job Package', 'jobhunt'),
+            'membership_package' => esc_html__('Apply Job Package', 'jobhunt'),
             'job package' => esc_html__('Job Package', 'jobhunt'),
             'jobs_search' => esc_html__('Jobs Search', 'jobhunt'),
             'jobs search' => esc_html__('Jobs Search', 'jobhunt'),
             'job_post' => esc_html__('Job Post', 'jobhunt'),
             'job post' => esc_html__('Job Post', 'jobhunt'),
+            'listing_tab' => esc_html__('JC : Listing Tab', 'jobhunt'),
+            'listing tab' => esc_html__('JC : Listing Tab', 'jobhunt'),
             'about' => esc_html__('About', 'jobhunt'),
             'about' => esc_html__('About', 'jobhunt'),
             'candidate' => esc_html__('Candidate', 'jobhunt'),
@@ -219,7 +221,7 @@ if ( ! function_exists('cs_element_list') ) {
             'job_specialisms' => $job_specialisms_label,
             'job specialisms' => $job_specialisms_label,
         );
-        $element_list   = apply_filters( 'jobhunt_pagebuilder_elements_list', $element_list );
+        $element_list = apply_filters('jobhunt_pagebuilder_elements_list', $element_list);
         return $element_list;
     }
 

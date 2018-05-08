@@ -58,7 +58,7 @@ if (!class_exists('cs_dashboard_templates')) {
 // end dashboard_register_templates
        
         /**
-         * Start Function if the templae page is assigned to the page funciton
+         * Start Function if the template page is assigned to the page funciton
          */
         
         public function dashboard_page_templates($template) {

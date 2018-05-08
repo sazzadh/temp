@@ -41,6 +41,8 @@ if ( ! function_exists('cs_job_search_box') ) {
             $modern_class = 'cs-jobsearch-modern v1';
         } elseif ( isset($atts['job_search_style']) and $atts['job_search_style'] == "fancy" ) {
             $modern_class = 'v3';
+        } elseif ( isset($atts['job_search_style']) and $atts['job_search_style'] == "default_fancy" ) {
+            $modern_class = 'default-fancy';
         }
         $specialisam_field_switch = 'no';
         if ( isset($atts['job_search_specialisam_field_switch']) && $atts['job_search_specialisam_field_switch'] == 'yes' ) {
@@ -117,7 +119,7 @@ if ( ! function_exists('cs_job_search_box') ) {
                                 </div>
                             </div>
                         <?php } ?>
-					
+
                         <form id="frm_jobs_filtration" action="<?php echo esc_url(get_permalink($search_result_page_id)); ?>" method="get"  class="search-area">
                             <?php
                             $title_col = 'col-lg-4 col-md-4 col-sm-6';
@@ -181,10 +183,13 @@ if ( ! function_exists('cs_job_search_box') ) {
                                                     <?php
                                                 }
 
-                                                if ( isset($atts['job_search_style']) and $atts['job_search_style'] != "fancy" ) {
+                                                if ( isset($atts['job_search_style']) and $atts['job_search_style'] != "fancy" and $atts['job_search_style'] != "default_fancy" ) {
                                                     ?>
                                                     <i class="icon-search7"></i>
                                                     <?php
+                                                }
+                                                if ( isset($atts['job_search_style']) and $atts['job_search_style'] == "default_fancy" ) {
+                                                    echo '<i class="icon-search6"></i>';
                                                 }
                                                 ?>
                                                 <?php
@@ -215,16 +220,22 @@ if ( ! function_exists('cs_job_search_box') ) {
                                     <?php } ?>
                                     <?php if ( $specialisam_field_switch == 'yes' ) { ?>  
                                         <?php
+                                        
+                                        $specialisms_label = esc_html__('Specialism', 'jobhunt');
+                                        $specialisms_label = apply_filters('jobhunt_replace_specialism_to_category', $specialisms_label);
+                                        
+                                         $all_specialisms_label = esc_html__('All specialisms', 'jobhunt');
+                                            $all_specialisms_label = apply_filters('jobhunt_replace_all_specialisms', $all_specialisms_label);
+                                        
+                                        
                                         if ( isset($atts['job_search_style']) and $atts['job_search_style'] == "modren" ) {
                                             echo '<div class="col-lg-12 col-md-12 col-sm-12"> ';
                                         } else if ( isset($atts['job_search_style']) and $atts['job_search_style'] == "classic" ) {
                                             echo '<div class="col-lg-12 col-md-12 col-sm-12"> ';
                                         } else {
-											$specialisms_label = esc_html__('Specialism', 'jobhunt');
-											$specialisms_label = apply_filters( 'jobhunt_replace_specialism_to_category', $specialisms_label );
-											
-											$all_specialisms_label = esc_html__('All specialisms', 'jobhunt');
-											$all_specialisms_label = apply_filters( 'jobhunt_replace_all_specialisms', $all_specialisms_label );
+                                            
+
+                                           
                                             ?>
                                             <div class="<?php echo $specialisam_col; ?>">
                                             <?php } ?>
@@ -265,7 +276,7 @@ if ( ! function_exists('cs_job_search_box') ) {
                                                               }
                                                           }
                                                       }
-													  
+
                                                       $cs_opt_array = array(
                                                           'std' => '',
                                                           'id' => '',
@@ -275,22 +286,21 @@ if ( ! function_exists('cs_job_search_box') ) {
                                                           'classes' => 'chosen-select',
                                                           'extra_atr' => 'data-placeholder="' . $all_specialisms_label . '"',
                                                       );
-													  
+
                                                       $cs_form_fields2->cs_form_select_render($cs_opt_array);
-													  													  
                                                       ?>
-												
-                                                      <?php if ( $job_search_hint_switch == 'yes' ) { ?>
-												
+
+                                                <?php if ( $job_search_hint_switch == 'yes' ) { ?>
+
                                                     <label
-														
-														<?php
-                                                    if ( $job_search_layout_heading_color != '' ) {
-                                                        echo ' style="color:' . $job_search_layout_heading_color . ' !important;"';
-                                                    }
-													$filter_by_specialisms_label = esc_html__('Filter by specialisms e.g. developer, designer', 'jobhunt');
-													$filter_by_specialisms_label = apply_filters( 'jobhunt_replace_filter_by_specialisms', $filter_by_specialisms_label );
-                                                    ?>><?php echo $filter_by_specialisms_label; ?></label>
+
+                                                        <?php
+                                                        if ( $job_search_layout_heading_color != '' ) {
+                                                            echo ' style="color:' . $job_search_layout_heading_color . ' !important;"';
+                                                        }
+                                                        $filter_by_specialisms_label = esc_html__('Filter by specialisms e.g. developer, designer', 'jobhunt');
+                                                        $filter_by_specialisms_label = apply_filters('jobhunt_replace_filter_by_specialisms', $filter_by_specialisms_label);
+                                                        ?>><?php echo $filter_by_specialisms_label; ?></label>
                                                     <?php } ?>
                                             </div>
                                         </div>
@@ -325,7 +335,6 @@ if ( ! function_exists('cs_job_search_box') ) {
                                                         ?>><?php esc_html_e('Location', 'jobhunt') ?></span>
                                                               <?php
                                                           }
-
                                                           $cs_radius = '';
                                                           if ( isset($_GET['radius']) && $_GET['radius'] > 0 ) {
                                                               $cs_radius = $_GET['radius'];
@@ -358,11 +367,8 @@ if ( ! function_exists('cs_job_search_box') ) {
                                                               $cs_default_radius = isset($cs_plugin_options['cs_default_radius']) ? $cs_plugin_options['cs_default_radius'] : '';
                                                               $cs_radius_measure = isset($cs_plugin_options['cs_radius_measure']) ? $cs_plugin_options['cs_radius_measure'] : '';
                                                               $cs_radius_measure = $cs_radius_measure == 'km' ? esc_html__('KM', 'jobhunt') : esc_html__('Miles', 'jobhunt');
-
                                                               $min_value = isset($cs_plugin_options['cs_radius_min']) ? $cs_plugin_options['cs_radius_min'] : '';
-
                                                               $max_value = isset($cs_plugin_options['cs_radius_max']) ? $cs_plugin_options['cs_radius_max'] : '';
-
                                                               $radius_step = isset($cs_plugin_options['cs_radius_step']) ? $cs_plugin_options['cs_radius_step'] : '';
 
                                                               // from submitted value
@@ -374,6 +380,9 @@ if ( ! function_exists('cs_job_search_box') ) {
                                                           ?>
                                                     <div id="cs-top-select-holder" class="select-location" data-locationadminurl="<?php echo esc_url(admin_url("admin-ajax.php")) ?>">
                                                         <?php
+                                                        if ( isset($atts['job_search_style']) and $atts['job_search_style'] == "default_fancy" ) {
+                                                            echo '<i class="icon-location6"></i>';
+                                                        }
                                                         $hint_text = '';
                                                         if ( $job_search_hint_switch == 'yes' ) {
                                                             $hint_color = '';
@@ -389,10 +398,11 @@ if ( ! function_exists('cs_job_search_box') ) {
                                                         }
                                                         $list_rand = rand(0, 499999999);
                                                         ?>
-                                                        <a id="location_redius_popup<?php echo absint($list_rand); ?>" href="javascript:void(0);" class="location-btn pop"><i class="icon-target3"></i></a>
+
                                                         <?php
                                                         if ( $cs_radius_switch == 'on' ) {
                                                             ?>
+                                                            <a id="location_redius_popup<?php echo absint($list_rand); ?>" href="javascript:void(0);" class="location-btn pop"><i class="icon-target3"></i></a>
                                                             <div id="popup<?php echo absint($list_rand); ?>" style="display:none;"  class="select-popup">
                                                                 <a class="cs-location-close-popup" id="cs_close<?php echo absint($list_rand); ?>"><i class="cs-color icon-times"></i></a>
                                                                 <p><?php esc_html_e("Show With in", "jobhunt"); ?></p>
@@ -448,7 +458,7 @@ if ( ! function_exists('cs_job_search_box') ) {
                                     ?>
                                     <div class="col-lg-2 col-md-2 col-sm-12">
                                     <?php } ?>
-                                    <?php if ( $job_lable_switch == 'yes' && $atts['job_search_style'] and ($atts['job_search_style'] != "simple" && $atts['job_search_style'] != "fancy" ) ) { ?>
+                                    <?php if ( $job_lable_switch == 'yes' && $atts['job_search_style'] and ( $atts['job_search_style'] != "simple" && $atts['job_search_style'] != "fancy" ) ) { ?>
                                         <span class="search_title">&nbsp;</span> 
                                     <?php } ?>  
                                     <div class="search-btn">
@@ -470,7 +480,7 @@ if ( ! function_exists('cs_job_search_box') ) {
                                             $cs_form_fields2->cs_form_text_render($cs_opt_array);
                                         }
 
-                                        if ( $job_advance_search_switch == 'yes' ) {
+                                        if ( $job_advance_search_switch == 'yes' && isset($atts['job_search_style']) && $atts['job_search_style'] != "default_fancy" ) {
                                             ?>
                                             <label>
                                                 <a<?php
@@ -513,6 +523,27 @@ if ( ! function_exists('cs_job_search_box') ) {
             }
             ?>
         </div>
+        <?php
+        if ( $job_advance_search_switch == 'yes' && isset($atts['job_search_style']) &&  $atts['job_search_style'] == "default_fancy" ) {
+
+            //advance-btn
+            $adv_btn_class = '';
+            if ( isset($atts['job_search_style']) and $atts['job_search_style'] == "default_fancy" ) {
+                $adv_btn_class = ' class="advance-btn"';
+            }
+            ?>
+            <label<?php echo $adv_btn_class; ?>>
+                <a<?php
+                if ( $job_search_layout_heading_color != '' ) {
+                    echo ' style="color:' . $job_search_layout_heading_color . ' !important;"';
+                }
+                ?> href="<?php echo esc_url($job_advance_search_url); ?>"  target="_blank">
+                        <?php esc_html_e("+ Advance Search", "jobhunt") ?>
+                </a>
+            </label>
+        <?php } ?>
+
+
         <script type="text/javascript">
             jQuery(document).ready(function () {
         <?php

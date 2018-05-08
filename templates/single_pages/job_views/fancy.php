@@ -304,7 +304,6 @@ $current_post_id = get_the_ID();
 							} else {
 							    
                                                             //do_action('jobhunt_applyjob_without_login',$job_post->ID);
-                                                            
 							    ?>
 							    <a href="javascript:void(0);" class="btn large like applied_icon" onclick="trigger_func('#btn-header-main-login',<?php echo $job_post->ID; ?>);"> 
 								<i class="icon-briefcase4"></i><?php esc_html_e('Apply Now', 'jobhunt') ?></a>

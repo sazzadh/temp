@@ -119,7 +119,7 @@ $count_post = $found_posts;
                             $job_type_flag ++;
                         }
                     }
-                    $cs_jobs_address = apply_filters('jobhunt_job_address_frontend', $job_address, $cs_job_id);
+                    $cs_jobs_address = apply_filters('jobhunt_job_address_frontend', $cs_jobs_address, $cs_job_id);
                     ?>
                     <li class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <div class="jobs-content">

@@ -32,7 +32,7 @@
                 $flag = 1;
                 if ( ! empty($loop->results) ) {
                     foreach ( $loop->results as $cs_user ) {
-                        $cs_employee_address = get_user_address_string_for_list($cs_user->ID, 'usermeta'); 
+                        $cs_employee_address = get_user_address_string_for_list($cs_user->ID, 'usermeta');
                         $cs_employee_emp_username = $cs_user->ID;
                         $cs_employee_comp_name = $cs_user->display_name;
                         $cs_employee_employer_img = get_user_meta($cs_user->ID, 'user_img', true);
@@ -40,6 +40,7 @@
                         if ( ! cs_image_exist($cs_employee_employer_img) || $cs_employee_employer_img == "" ) {
                             $cs_employee_employer_img = esc_url(wp_jobhunt::plugin_url() . 'assets/images/img-not-found16x9.jpg');
                         }
+                        $current_timestamp = current_time('timestamp');
                         $emp_jobpost = array( 'posts_per_page' => "1", 'post_type' => 'jobs', 'order' => "DESC", 'orderby' => 'post_date',
                             'post_status' => 'publish', 'ignore_sticky_posts' => 1,
                             'meta_query' => array(
@@ -48,6 +49,21 @@
                                     'value' => $cs_employee_emp_username,
                                     'compare' => '=',
                                 ),
+                                array(
+                                    'key' => 'cs_job_posted',
+                                    'value' => $current_timestamp,
+                                    'compare' => '<=',
+                                ),
+                                array(
+                                    'key' => 'cs_job_expired',
+                                    'value' => $current_timestamp,
+                                    'compare' => '>=',
+                                ),
+                                array(
+                                    'key' => 'cs_job_status',
+                                    'value' => 'active',
+                                    'compare' => '=',
+                                )
                             )
                         );
                         $loop_job_count = new WP_Query($emp_jobpost);
@@ -90,18 +106,18 @@
                                     <h3><a href="<?php echo get_author_posts_url($cs_user->ID) ?>"><?php echo esc_html($cs_employee_comp_name) ?></a></h3>
                                     <?php if ( $cs_employee_address <> '' ) { ?>
                                         <a href="#" class="cs-color">@ <?php echo esc_html($cs_employee_address) ?></a>
-                                    <?php 
-                                    }  
+                                        <?php
+                                    }
                                     $featured_employer = apply_filters('jobhunt_make_featured_tag', '', $cs_user->ID);
                                     echo force_balance_tags($featured_employer);
-                                    do_action('jobhunt_employer_description',$cs_user->ID);
+                                    do_action('jobhunt_employer_description', $cs_user->ID);
                                     ?>
                                 </div>
                                 <?php
                                 if ( isset($specialism_html) ) {
                                     ?><div class="cs-specialism"><?php
                                     echo force_balance_tags($specialism_html);
-                                    ?></div><?php 
+                                    ?></div><?php
                                 }
                                 ?>
                             </div>

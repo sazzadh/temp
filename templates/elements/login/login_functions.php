@@ -116,7 +116,7 @@ if ( ! function_exists('cs_registration_validation') ) {
         $cs_msg_html = '</p></div>';
         $id = $_POST['id']; //rand id 
         $username = ($_POST['user_login' . $id]);
-
+        
         $cs_user_role_type = (isset($_POST['cs_user_role_type' . $id]) and $_POST['cs_user_role_type' . $id] <> '') ? $_POST['cs_user_role_type' . $id] : '';
         $json = array();
         $cs_captcha_switch = isset($cs_plugin_options['cs_captcha_switch']) ? $cs_plugin_options['cs_captcha_switch'] : '';
@@ -145,6 +145,7 @@ if ( ! function_exists('cs_registration_validation') ) {
             echo json_encode($json);
             exit();
         }
+        do_action('jobhunt_verify_terms_policy', $_POST);
         if ( $cs_captcha_switch == 'on' ) {
             cs_captcha_verify();
         }
@@ -160,6 +161,8 @@ if ( ! function_exists('cs_registration_validation') ) {
         $random_password = apply_filters('cs_employee_password_save', $random_password, $_POST);
         $status = wp_create_user($username, $random_password, $email);
         do_action('cs_employee_field_save', $_POST, $status);
+        do_action('jobhunt_allow_search_save', $_POST, $status);
+        
         if ( is_wp_error($status) ) {
             $json['type'] = "error";
             $json['message'] = $cs_danger_html . esc_html__("User already exists. Please try another one.", "jobhunt") . $cs_msg_html;
@@ -267,7 +270,7 @@ if ( ! function_exists('cs_registration_validation') ) {
             }
             update_user_meta($status, 'cs_phone_number', $cs_phone_no);
             update_user_meta($status, 'cs_user_last_activity_date', strtotime(current_time('d-m-Y')));
-            update_user_meta($status, 'cs_allow_search', 'yes');
+            //update_user_meta($status, 'cs_allow_search', 'yes');
             if ( ! empty($cs_specialisms) ) {
                 update_user_meta($status, 'cs_specialisms', $cs_specialisms);
             }

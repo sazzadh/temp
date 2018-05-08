@@ -125,7 +125,7 @@ $current_post_ids = get_the_ID();
                                             //  job info section
                                             $jobs_info_output = '';
                                             $jobs_info_output .= '<div class="jobs-info">';
-                                            $jobs_info_output .= cs_check_expire_job(get_the_ID(),'html');
+                                            $jobs_info_output .= cs_check_expire_job(get_the_ID(), 'html');
                                             //  image section
                                             if ( $cs_employee_employer_img <> '' ) {
                                                 $jobs_info_output .= '<div class="cs-media">';
@@ -554,145 +554,152 @@ $current_post_ids = get_the_ID();
 
                                 $display_employer_contact_from_job_detail = 'yes';
                                 $display_employer_contact_from_job_detail = apply_filters('jobhunt_employer_contact_from_job_detail', $display_employer_contact_from_job_detail, $current_post_ids);
+
+                                $cs_job_detail_contact_form = isset($cs_plugin_options['cs_job_detail_contact_form']) ? $cs_plugin_options['cs_job_detail_contact_form'] : '';
                                 ?>
-                                <?php if ( $employer_contact_form == 'on' && ( $display_employer_contact_form == 'yes' && $display_employer_contact_from_job_detail == 'yes' ) ) { ?>
-                                    <div class="employer-contact-form">
-
-                                        <?php
-                                        $cs_sitekey = isset($cs_plugin_options['cs_sitekey']) ? $cs_plugin_options['cs_sitekey'] : '';
-                                        $cs_secretkey = isset($cs_plugin_options['cs_secretkey']) ? $cs_plugin_options['cs_secretkey'] : '';
-                                        cs_google_recaptcha_scripts();
+                                <?php
+                                if ( isset($cs_job_detail_contact_form) && $cs_job_detail_contact_form == 'on' ) {
+                                    if ( $employer_contact_form == 'on' && ( $display_employer_contact_form == 'yes' && $display_employer_contact_from_job_detail == 'yes' ) ) {
                                         ?>
-                                        <script>
+                                        <div class="employer-contact-form">
+                                            <?php
+                                            $cs_sitekey = isset($cs_plugin_options['cs_sitekey']) ? $cs_plugin_options['cs_sitekey'] : '';
+                                            $cs_secretkey = isset($cs_plugin_options['cs_secretkey']) ? $cs_plugin_options['cs_secretkey'] : '';
+                                            cs_google_recaptcha_scripts();
+                                            ?>
+                                            <script>
 
-                                            var recaptcha8;
-                                            var cs_multicap = function () {
-                                                //Render the recaptcha1 on the element with ID "recaptcha1"
+                                                var recaptcha8;
+                                                var cs_multicap = function () {
+                                                    //Render the recaptcha1 on the element with ID "recaptcha1"
 
-                                                recaptcha8 = grecaptcha.render('recaptcha8', {
-                                                    'sitekey': '<?php echo ($cs_sitekey); ?>', //Replace this with your Site key
-                                                    'theme': 'light'
-                                                });
-                                            };
+                                                    recaptcha8 = grecaptcha.render('recaptcha8', {
+                                                        'sitekey': '<?php echo ($cs_sitekey); ?>', //Replace this with your Site key
+                                                        'theme': 'light'
+                                                    });
+                                                };
 
-                                        </script>
-
-
-                                        <h5><?php
-                                            esc_html_e('Contact', 'jobhunt');
-                                            $cs_terms_condition = isset($cs_plugin_options['cs_terms_condition']) ? $cs_plugin_options['cs_terms_condition'] : '';
-                                            ?></h5>
+                                            </script>
 
 
-                                        <div class="cs-profile-contact-detail" data-adminurl="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" data-cap="recaptcha7">
-                                            <form id="ajaxcontactemployer" action="#" method="post" enctype="multipart/form-data">
-                                                <div id="ajaxcontact-response" class=""></div>
-
-                                                <div class="input-filed"> <i class="icon-user9"></i>
-                                                    <?php
-                                                    $cs_opt_array = array(
-                                                        'id' => '',
-                                                        'std' => isset($login_user_name) ? esc_html($login_user_name) : '',
-                                                        'cust_id' => "ajaxcontactname",
-                                                        'cust_name' => "ajaxcontactname",
-                                                        'classes' => 'form-control',
-                                                        'extra_atr' => 'placeholder="' . esc_html__('Enter your Name', 'jobhunt') . '*"',
-                                                        'required' => 'yes',
-                                                    );
-                                                    $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                                                    ?>
-
-                                                </div>
-                                                <div class="input-filed"> <i class="icon-envelope4"></i>
-                                                    <?php
-                                                    $cs_opt_array = array(
-                                                        'id' => '',
-                                                        'std' => isset($login_user_email) ? esc_html($login_user_email) : '',
-                                                        'cust_id' => "ajaxcontactemail",
-                                                        'cust_name' => "ajaxcontactemail",
-                                                        'classes' => 'form-control',
-                                                        'extra_atr' => 'placeholder="' . esc_html__('Email Address', 'jobhunt') . '*"',
-                                                        'required' => 'yes',
-                                                    );
-                                                    $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                                                    ?>
-                                                </div>
-                                                <div class="input-filed"> <i class="icon-mobile4"></i>
-                                                    <?php
-                                                    $cs_opt_array = array(
-                                                        'id' => '',
-                                                        'std' => isset($login_user_phone) ? esc_html($login_user_phone) : '',
-                                                        'cust_id' => "ajaxcontactphone",
-                                                        'cust_name' => "ajaxcontactphone",
-                                                        'classes' => 'form-control',
-                                                        'extra_atr' => 'placeholder="' . esc_html__('Phone Number', 'jobhunt') . '"',
-                                                    );
-                                                    $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                                                    ?>
-                                                </div>
-                                                <div class="input-filed">
-                                                    <?php
-                                                    $cs_opt_array = array(
-                                                        'id' => '',
-                                                        'std' => '',
-                                                        'cust_id' => "ajaxcontactcontents",
-                                                        'cust_name' => "ajaxcontactcontents",
-                                                        'classes' => 'form-control',
-                                                        'extra_atr' => 'placeholder="' . esc_html__('Message should have more than 50 characters', 'jobhunt') . '"',
-                                                    );
-                                                    $cs_form_fields2->cs_form_textarea_render($cs_opt_array);
-                                                    ?>
-                                                </div>
-
-                                                <?php
-                                                global $cs_plugin_options;
-                                                $cs_captcha_switch = isset($cs_plugin_options['cs_captcha_switch']) ? $cs_plugin_options['cs_captcha_switch'] : '';
-
-                                                if ( $cs_captcha_switch == 'on' ) {
-                                                    echo '<div class="input-holder recaptcha-reload" id="recaptcha8_div">';
-                                                    echo cs_captcha('recaptcha8');
-                                                    echo '</div>';
-                                                }
-                                                ?>
-                                                <div class="submit-btn profile-contact-btn" data-employerid="<?php echo esc_html($employer_post->ID); ?>">
-                                                    <?php
-                                                    $cs_opt_array = array(
-                                                        'id' => '',
-                                                        'std' => esc_html__('Send Email', 'jobhunt'),
-                                                        'cust_id' => "employerid_contactus",
-                                                        'cust_name' => "employerid_contactus",
-                                                        'cust_type' => 'button',
-                                                    );
-
-                                                    $cs_opt_array = apply_filters('jobhunt_employer_contact_form_btn', $cs_opt_array);
-
-                                                    $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                                                    $cs_opt_array = array(
-                                                        'std' => 'cs_registration_validation',
-                                                        'cust_id' => 'action',
-                                                        'cust_name' => 'action',
-                                                        'cust_type' => 'hidden',
-                                                        'return' => true,
-                                                    );
-                                                    $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                                                    ?>
-                                                    <div id="main-cs-loader" class="loader_class"></div>
-                                                </div>
-
-                                                <?php
+                                            <h5><?php
+                                                esc_html_e('Contact', 'jobhunt');
                                                 $cs_terms_condition = isset($cs_plugin_options['cs_terms_condition']) ? $cs_plugin_options['cs_terms_condition'] : '';
-                                                if ( $cs_terms_condition != '' ) {
-                                                    ?>
-                                                    <span class="cs-terms"><?php esc_html_e('You accepts our', 'jobhunt') ?><a target="_blank" href="<?php echo esc_url(get_permalink($cs_terms_condition)) ?>"> <?php esc_html_e('Terms and Conditions', 'jobhunt') ?></a></span> 
-                                                    <?php
-                                                }
-                                                ?>
+                                                ?></h5>
 
-                                            </form>
+
+                                            <div class="cs-profile-contact-detail" data-adminurl="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" data-cap="recaptcha7">
+                                                <form id="ajaxcontactemployer" action="#" method="post" enctype="multipart/form-data">
+                                                    <div id="ajaxcontact-response" class=""></div>
+
+                                                    <div class="input-filed"> <i class="icon-user9"></i>
+                                                        <?php
+                                                        $cs_opt_array = array(
+                                                            'id' => '',
+                                                            'std' => isset($login_user_name) ? esc_html($login_user_name) : '',
+                                                            'cust_id' => "ajaxcontactname",
+                                                            'cust_name' => "ajaxcontactname",
+                                                            'classes' => 'form-control',
+                                                            'extra_atr' => 'placeholder="' . esc_html__('Enter your Name', 'jobhunt') . '*"',
+                                                            'required' => 'yes',
+                                                        );
+                                                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                                        ?>
+
+                                                    </div>
+                                                    <div class="input-filed"> <i class="icon-envelope4"></i>
+                                                        <?php
+                                                        $cs_opt_array = array(
+                                                            'id' => '',
+                                                            'std' => isset($login_user_email) ? esc_html($login_user_email) : '',
+                                                            'cust_id' => "ajaxcontactemail",
+                                                            'cust_name' => "ajaxcontactemail",
+                                                            'classes' => 'form-control',
+                                                            'extra_atr' => 'placeholder="' . esc_html__('Email Address', 'jobhunt') . '*"',
+                                                            'required' => 'yes',
+                                                        );
+                                                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                                        ?>
+                                                    </div>
+                                                    <div class="input-filed"> <i class="icon-mobile4"></i>
+                                                        <?php
+                                                        $cs_opt_array = array(
+                                                            'id' => '',
+                                                            'std' => isset($login_user_phone) ? esc_html($login_user_phone) : '',
+                                                            'cust_id' => "ajaxcontactphone",
+                                                            'cust_name' => "ajaxcontactphone",
+                                                            'classes' => 'form-control',
+                                                            'extra_atr' => 'placeholder="' . esc_html__('Phone Number', 'jobhunt') . '"',
+                                                        );
+                                                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                                        ?>
+                                                    </div>
+                                                    <div class="input-filed">
+                                                        <?php
+                                                        $cs_opt_array = array(
+                                                            'id' => '',
+                                                            'std' => '',
+                                                            'cust_id' => "ajaxcontactcontents",
+                                                            'cust_name' => "ajaxcontactcontents",
+                                                            'classes' => 'form-control',
+                                                            'extra_atr' => 'placeholder="' . esc_html__('Message should have more than 50 characters', 'jobhunt') . '"',
+                                                        );
+                                                        $cs_form_fields2->cs_form_textarea_render($cs_opt_array);
+                                                        ?>
+                                                    </div>
+
+                                                    <?php
+                                                    global $cs_plugin_options;
+                                                    $cs_captcha_switch = isset($cs_plugin_options['cs_captcha_switch']) ? $cs_plugin_options['cs_captcha_switch'] : '';
+
+                                                    if ( $cs_captcha_switch == 'on' ) {
+                                                        echo '<div class="input-holder recaptcha-reload" id="recaptcha8_div">';
+                                                        echo cs_captcha('recaptcha8');
+                                                        echo '</div>';
+                                                    }
+                                                    ?>
+                                                    <div class="submit-btn profile-contact-btn" data-employerid="<?php echo esc_html($employer_post->ID); ?>">
+                                                        <?php
+                                                        $cs_opt_array = array(
+                                                            'id' => '',
+                                                            'std' => esc_html__('Send Email', 'jobhunt'),
+                                                            'cust_id' => "employerid_contactus",
+                                                            'cust_name' => "employerid_contactus",
+                                                            'cust_type' => 'button',
+                                                        );
+
+                                                        $cs_opt_array = apply_filters('jobhunt_employer_contact_form_btn', $cs_opt_array);
+
+                                                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                                        $cs_opt_array = array(
+                                                            'std' => 'cs_registration_validation',
+                                                            'cust_id' => 'action',
+                                                            'cust_name' => 'action',
+                                                            'cust_type' => 'hidden',
+                                                            'return' => true,
+                                                        );
+                                                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                                        ?>
+                                                        <div id="main-cs-loader" class="loader_class"></div>
+                                                    </div>
+
+                                                    <?php
+                                                    $cs_terms_condition = isset($cs_plugin_options['cs_terms_condition']) ? $cs_plugin_options['cs_terms_condition'] : '';
+                                                    if ( $cs_terms_condition != '' ) {
+                                                        ?>
+                                                        <span class="cs-terms"><?php esc_html_e('You accepts our', 'jobhunt') ?><a target="_blank" href="<?php echo esc_url(get_permalink($cs_terms_condition)) ?>"> <?php esc_html_e('Terms and Conditions', 'jobhunt') ?></a></span> 
+                                                        <?php
+                                                    }
+                                                    ?>
+
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <?php
+                                        <?php
+                                    }
                                 }
+
+
                                 $contact_form_output = ob_get_clean();
                                 echo apply_filters('contact_form', $contact_form_output, $current_post_ids);
                                 ?>

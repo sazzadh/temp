@@ -2270,6 +2270,9 @@ table#locations.display thead tr th { border-left: 1px solid; padding: 10px; }
 .importer-list li.importer-list-active .btn-import { top: 45%; opacity: 1; visibility: visible; }
 .importer-list li input { display: inline-block; width: auto; }
 .importer-list li label { position: relative; width: 100%; -webkit-box-shadow: 0 0 7px rgba(0,0,0,.15); -moz-box-shadow: 0 0 7px rgba(0,0,0,.15); box-shadow: 0 0 7px rgba(0,0,0,.15); margin-bottom: 20px; border: solid 1px transparent; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; }
+.importer-list li.demo-data-item-wrapper {display: inline-block; vertical-align: top; float: none; margin-right: -4px; margin-bottom:20px;}
+.importer-list li .radiobox label {height:300px;}
+.importer-list li .radiobox label a img {height:100%;}
 .importer-list .importer-list-active label { border: solid 1px #55a747; }
 .importer-list li input[type="checkbox"] { display: none; }
 .importer-list li input[type="radio"] { display: none; }

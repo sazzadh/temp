@@ -76,6 +76,7 @@ $popup_randid = rand(0, 499999999);
                 </div>
                 <!-- location with radius -->
                 <?php
+                do_action('jobhunt_shahran_candidate_search_filter_field');
                 if (isset($cs_plugin_options['cs_jobhunt_search_location']) && $cs_plugin_options['cs_jobhunt_search_location'] == 'on') {
                     ?>
                     <div class="job-side-location-field">
@@ -344,19 +345,7 @@ $popup_randid = rand(0, 499999999);
                                                         'compare' => '=',
                                                     ),
                                                 ),
-                                                array(
-                                                    'relation' => 'OR',
-                                                    array(
-                                                        'key' => 'cs_allow_search',
-                                                        'value' => 'yes',
-                                                        'compare' => '=',
-                                                    ),
-                                                    array(
-                                                        'key' => 'cs_allow_search',
-                                                        'value' => '',
-                                                        'compare' => '=',
-                                                    )
-                                                ),
+                                                $user_allow_in_search_query,
                                             )
                                         );
                                     }
@@ -376,19 +365,7 @@ $popup_randid = rand(0, 499999999);
                                                     'compare' => '=',
                                                 ),
                                             ),
-                                            array(
-                                                'relation' => 'OR',
-                                                array(
-                                                    'key' => 'cs_allow_search',
-                                                    'value' => 'yes',
-                                                    'compare' => '=',
-                                                ),
-                                                array(
-                                                    'key' => 'cs_allow_search',
-                                                    'value' => '',
-                                                    'compare' => '=',
-                                                )
-                                            ),
+                                            $user_allow_in_search_query,
                                         )
                                     );
                                 }
@@ -706,19 +683,7 @@ $popup_randid = rand(0, 499999999);
                                                                                 'value' => 'active',
                                                                                 'compare' => '=',
                                                                             ),
-                                                                            array(
-                                                                                'relation' => 'OR',
-                                                                                array(
-                                                                                    'key' => 'cs_allow_search',
-                                                                                    'value' => 'yes',
-                                                                                    'compare' => '=',
-                                                                                ),
-                                                                                array(
-                                                                                    'key' => 'cs_allow_search',
-                                                                                    'value' => '',
-                                                                                    'compare' => '=',
-                                                                                )
-                                                                            ),
+                                                                            $user_allow_in_search_query,
                                                                             $dropdown_arr,
                                                                         )
                                                                     );
@@ -732,19 +697,7 @@ $popup_randid = rand(0, 499999999);
                                                                             'value' => 'active',
                                                                             'compare' => '=',
                                                                         ),
-                                                                        array(
-                                                                            'relation' => 'OR',
-                                                                            array(
-                                                                                'key' => 'cs_allow_search',
-                                                                                'value' => 'yes',
-                                                                                'compare' => '=',
-                                                                            ),
-                                                                            array(
-                                                                                'key' => 'cs_allow_search',
-                                                                                'value' => '',
-                                                                                'compare' => '=',
-                                                                            )
-                                                                        ),
+                                                                        $user_allow_in_search_query,
                                                                         $dropdown_arr,
                                                                     )
                                                                 );
@@ -805,19 +758,7 @@ $popup_randid = rand(0, 499999999);
                                                                                 'value' => 'active',
                                                                                 'compare' => '=',
                                                                             ),
-                                                                            array(
-                                                                                'relation' => 'OR',
-                                                                                array(
-                                                                                    'key' => 'cs_allow_search',
-                                                                                    'value' => 'yes',
-                                                                                    'compare' => '=',
-                                                                                ),
-                                                                                array(
-                                                                                    'key' => 'cs_allow_search',
-                                                                                    'value' => '',
-                                                                                    'compare' => '=',
-                                                                                )
-                                                                            ),
+                                                                            $user_allow_in_search_query,
                                                                             $dropdown_arr,
                                                                         )
                                                                     );
@@ -831,19 +772,7 @@ $popup_randid = rand(0, 499999999);
                                                                             'value' => 'active',
                                                                             'compare' => '=',
                                                                         ),
-                                                                        array(
-                                                                            'relation' => 'OR',
-                                                                            array(
-                                                                                'key' => 'cs_allow_search',
-                                                                                'value' => 'yes',
-                                                                                'compare' => '=',
-                                                                            ),
-                                                                            array(
-                                                                                'key' => 'cs_allow_search',
-                                                                                'value' => '',
-                                                                                'compare' => '=',
-                                                                            )
-                                                                        ),
+                                                                        $user_allow_in_search_query,
                                                                         $dropdown_arr,
                                                                     )
                                                                 );
@@ -1070,19 +999,7 @@ $popup_randid = rand(0, 499999999);
                                                                         'value' => 'active',
                                                                         'compare' => '=',
                                                                     ),
-                                                                    array(
-                                                                        'relation' => 'OR',
-                                                                        array(
-                                                                            'key' => 'cs_allow_search',
-                                                                            'value' => 'yes',
-                                                                            'compare' => '=',
-                                                                        ),
-                                                                        array(
-                                                                            'key' => 'cs_allow_search',
-                                                                            'value' => '',
-                                                                            'compare' => '=',
-                                                                        )
-                                                                    ),
+                                                                    $user_allow_in_search_query,
                                                                     array(
                                                                         'key' => $query_str_var_name,
                                                                         'value' => $range_min,
@@ -1105,19 +1022,7 @@ $popup_randid = rand(0, 499999999);
                                                                     'value' => 'active',
                                                                     'compare' => '=',
                                                                 ),
-                                                                array(
-                                                                    'relation' => 'OR',
-                                                                    array(
-                                                                        'key' => 'cs_allow_search',
-                                                                        'value' => 'yes',
-                                                                        'compare' => '=',
-                                                                    ),
-                                                                    array(
-                                                                        'key' => 'cs_allow_search',
-                                                                        'value' => '',
-                                                                        'compare' => '=',
-                                                                    )
-                                                                ),
+                                                                $user_allow_in_search_query,
                                                                 array(
                                                                     'key' => $query_str_var_name,
                                                                     'value' => $range_min,

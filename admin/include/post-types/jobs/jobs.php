@@ -61,7 +61,7 @@ if ( ! class_exists('post_type_job') ) {
                 'show_ui' => true,
                 'has_archive' => false,
                 'query_var' => false,
-                'menu_icon' => 'dashicons-admin-post',
+                'menu_icon' => 'dashicons-welcome-learn-more',
                 'rewrite' => true,
                 'capability_type' => 'post',
                 //'hierarchical' => true,

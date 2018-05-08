@@ -423,7 +423,7 @@ if ( ! class_exists('cs_employer_functions') ) {
                 'post_content' => $cs_job_desc,
                 'post_status' => 'publish',
                 'post_type' => 'jobs',
-                'post_date' => current_time('Y-m-d H:i:s')
+                'post_date' => current_time('Y-m-d H:i:s',1)
             );
             //insert job
             $job_id = wp_insert_post($job_post);
@@ -445,10 +445,12 @@ if ( ! class_exists('cs_employer_functions') ) {
             $cs_insert_array = array(
                 'cs_job_id' => $cs_job_id,
                 'cs_job_username' => $cs_job_user,
-                'cs_job_posted' => strtotime(current_time('d-m-Y H:i:s')),
+                'cs_job_posted' => strtotime(current_time('d-m-Y H:i:s',1)),
                 'cs_job_expired' => strtotime($cs_job_expire),
                 'cs_job_package' => $cs_job_pkg,
                 'cs_job_status' => $cs_job_status,
+                'cs_job_featured' => 'no',
+                
             );
             // update location fiels
             if ( $cs_post_loc_zoom != '' ) {

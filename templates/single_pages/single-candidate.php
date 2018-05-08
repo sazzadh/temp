@@ -113,13 +113,13 @@ $custom_addon_active = apply_filters('jobhunt_custom_addon_depedency', $custom_a
                     $cs_award_names = get_user_meta($cs_user_data->ID, 'cs_award_name_array', true);
                     $cs_award_years = get_user_meta($cs_user_data->ID, 'cs_award_year_array', true);
                     $cs_award_descs = get_user_meta($cs_user_data->ID, 'cs_award_description_array', true);
-					// get video
-					$cs_video_url = get_user_meta($cs_user_data->ID, 'cs_video_url', true);
+                    // get video
+                    $cs_video_url = get_user_meta($cs_user_data->ID, 'cs_video_url', true);
                     // get skills list
                     $cs_get_skill_list = get_user_meta($cs_user_data->ID, 'cs_skills_list_array', true);
                     $cs_skill_titles = get_user_meta($cs_user_data->ID, 'cs_skill_title_array', true);
                     $cs_skill_percentages = get_user_meta($cs_user_data->ID, 'cs_skill_percentage_array', true);
-                    $cs_header_creds = cs_header_cover_style('candidate', $cs_candidate_cover_employer_img, '250');
+                    $cs_header_creds = cs_header_cover_style('candidate', $cs_candidate_cover_employer_img, '0');
                     $cs_header_style = isset($cs_header_creds[0]) ? $cs_header_creds[0] : '';
                     $cs_header_paralax_class = isset($cs_header_creds[1]) ? ' ' . $cs_header_creds[1] : '';
                     $cs_candidate_default_cover_style = isset($jobcareer_options['cs_candidate_default_cover_style']) ? $jobcareer_options['cs_candidate_default_cover_style'] . '-view' : '';
@@ -202,7 +202,7 @@ $custom_addon_active = apply_filters('jobhunt_custom_addon_depedency', $custom_a
                                                             $cs_candidate_address = apply_filters('jobhunt_candidate_address_frontend', $cs_candidate_address, $cs_user_data->ID);
                                                             if ( $cs_candidate_address != '' ) {
                                                                 echo '<li><i class="icon-location6"></i>' . $cs_candidate_address . '</li>';
-                                                            }else {
+                                                            } else {
                                                                 $cs_candidate_address = apply_filters('jobhunt_show_optional_address_frontend', '', $cs_user_data->ID);
                                                                 if ( $cs_candidate_address != '' ) {
                                                                     echo '<li><i class="icon-location6"></i>' . $cs_candidate_address . '</li>';
@@ -229,13 +229,13 @@ $custom_addon_active = apply_filters('jobhunt_custom_addon_depedency', $custom_a
                                                             <?php if ( isset($cs_get_exp_list) && is_array($cs_get_exp_list) && count($cs_get_exp_list) > 0 ) { ?>
                                                                 <li><a href="#experience"> <?php esc_html_e("Work Experience", "jobhunt"); ?></a></li>
                                                             <?php } ?>
-                                                            <?php if ( isset($cs_get_port_list) && is_array($cs_get_port_list) && count($cs_get_port_list) > 0 && !$custom_addon_active) { ?>
-                                                            <li><a href="#portfolio"> <?php esc_html_e("Portfolio", "jobhunt"); ?></a></li> 
+                                                            <?php if ( isset($cs_get_port_list) && is_array($cs_get_port_list) && count($cs_get_port_list) > 0 && ! $custom_addon_active ) { ?>
+                                                                <li><a href="#portfolio"> <?php esc_html_e("Portfolio", "jobhunt"); ?></a></li> 
                                                             <?php } ?>
                                                             <?php if ( isset($cs_get_skill_list) && is_array($cs_get_skill_list) && count($cs_get_skill_list) > 0 ) { ?>
                                                                 <li><a href="#skills"> <?php esc_html_e("Professional Skills", "jobhunt"); ?></a></li>
                                                             <?php } ?>
-															<?php if ( isset($cs_video_url)  && count($cs_video_url) > 0 ) { ?>
+                                                            <?php if ( isset($cs_video_url) && count($cs_video_url) > 0 ) { ?>
                                                                 <li><a href="#video-section"> <?php esc_html_e("Video", "jobhunt"); ?></a></li>
                                                             <?php } ?>
                                                             <?php if ( isset($cs_get_award_list) && is_array($cs_get_award_list) && count($cs_get_award_list) > 0 ) { ?>
@@ -483,7 +483,7 @@ $custom_addon_active = apply_filters('jobhunt_custom_addon_depedency', $custom_a
                                                         <?php
                                                     }
                                                 }
-                                                if ( $cs_portfolio_switch == 'on' && !$custom_addon_active) {
+                                                if ( $cs_portfolio_switch == 'on' && ! $custom_addon_active ) {
                                                     if ( isset($cs_get_port_list) && is_array($cs_get_port_list) && count($cs_get_port_list) > 0 ) {
                                                         ?>
                                                         <section id="portfolio">
@@ -598,31 +598,29 @@ $custom_addon_active = apply_filters('jobhunt_custom_addon_depedency', $custom_a
                                                         <?php
                                                     }
                                                 }
-												
-                                                    if ( isset($cs_video_url) && count($cs_video_url) > 0 ) {
-                                                        ?>
-                                                        <div class="panel-inner" id="video-section">
-                                                            <div class="inner">
-                                                                <div class="cs-element-title cs-color csborder-color">
-                                                                    <i class="icon-trophy5"></i>
-                                                                    <h4><?php esc_html_e('Videos', 'jobhunt') ?></h4>
-                                                                </div>
-                                                                <div class="cs-profile-awards">
-                                                                    <ul>
-                                                                        <?php
-																	   $embed_code = wp_oembed_get( $cs_video_url );
-																	   print_r ($embed_code);
-                                                                        ?>
 
-                                                                    </ul>
-
-                                                                </div>
+                                                if ( isset($cs_video_url) && ! empty($cs_video_url) && count($cs_video_url) > 0 ) {
+                                                    ?>
+                                                    <div class="panel-inner" id="video-section">
+                                                        <div class="inner">
+                                                            <div class="cs-element-title cs-color csborder-color">
+                                                                <i class="icon-film4"></i>
+                                                                <h4><?php esc_html_e('Videos', 'jobhunt') ?></h4>
+                                                            </div>
+                                                            <div class="cs-profile-awards">
+                                                                <ul>
+                                                                    <?php
+                                                                    $embed_code = wp_oembed_get($cs_video_url);
+                                                                    print_r($embed_code);
+                                                                    ?>
+                                                                </ul>
                                                             </div>
                                                         </div>
-                                                        <?php
-                                                    }
-                                              
-												
+                                                    </div>
+                                                    <?php
+                                                }
+
+
                                                 if ( $cs_award_switch == 'on' ) {
                                                     if ( isset($cs_get_award_list) && is_array($cs_get_award_list) && count($cs_get_award_list) > 0 ) {
                                                         ?>

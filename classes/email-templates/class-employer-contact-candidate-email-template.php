@@ -49,7 +49,7 @@ if ( ! class_exists('jobhunt_employer_contact_candidate_email_template') ) {
 
             add_filter('jobhunt_email_template_settings', array( $this, 'template_settings_callback' ), 12, 1);
             add_action('init', array( $this, 'add_email_template' ), 5);
-            add_action('jobhunt_employer_contact_candidate', array( $this, 'employer_contact_candidate_callback' ), 10, 2);
+            add_action('jobhunt_employer_contact_candidate', array( $this, 'employer_contact_candidate_callback' ), 10, 1);
         }
 
         public function template_settings_callback($email_template_options) {
@@ -92,7 +92,7 @@ if ( ! class_exists('jobhunt_employer_contact_candidate_email_template') ) {
 
             $template = $this->get_template();
             // checking email notification is enable/disable
-            if ( isset($template['email_notification']) && $template['email_notification'] == 1 ) {
+            //if ( isset($template['email_notification']) && $template['email_notification'] == 1 ) {
 
                 $blogname = get_option('blogname');
                 $admin_email = get_option('admin_email');
@@ -112,7 +112,7 @@ if ( ! class_exists('jobhunt_employer_contact_candidate_email_template') ) {
                 );
                 do_action('jobhunt_send_mail', $args);
                 jobhunt_employer_contact_candidate_email_template::$is_email_sent1 = $this->is_email_sent;
-            }
+           // }
         }
 
         public function add_email_template() {

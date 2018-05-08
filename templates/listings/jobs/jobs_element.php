@@ -27,8 +27,8 @@ if ( ! function_exists('jobcareer_pb_jobs') ) {
             $parseObject = new ShortcodeParse();
             $output = $parseObject->cs_shortcodes($output, $shortcode_str, true, $PREFIX);
         }
-		
-		$cs_loc_latitude = isset($cs_plugin_options['cs_post_loc_latitude']) ? $cs_plugin_options['cs_post_loc_latitude'] : '';
+
+        $cs_loc_latitude = isset($cs_plugin_options['cs_post_loc_latitude']) ? $cs_plugin_options['cs_post_loc_latitude'] : '';
         $cs_loc_longitude = isset($cs_plugin_options['cs_post_loc_longitude']) ? $cs_plugin_options['cs_post_loc_longitude'] : '';
         $cs_map_zoom_level = isset($cs_plugin_options['cs_map_zoom_level']) ? $cs_plugin_options['cs_map_zoom_level'] : '';
 
@@ -73,16 +73,16 @@ if ( ! function_exists('jobcareer_pb_jobs') ) {
                             cs_shortcode_element_size();
                         }
 
-						$rand_num = rand(9876, 5432);
-						$cs_opt_array = array(
-							'std' => $rand_num,
-							'id' => 'job_counter',
-							'cust_name' => 'cs_job_counter[]',
-						);
-						$cs_form_fields2->cs_form_hidden_render($cs_opt_array);
-						
-						
-						$cs_opt_array = array(
+                        $rand_num = rand(9876, 5432);
+                        $cs_opt_array = array(
+                            'std' => $rand_num,
+                            'id' => 'job_counter',
+                            'cust_name' => 'cs_job_counter[]',
+                        );
+                        $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+
+
+                        $cs_opt_array = array(
                             'name' => esc_html__('Element Title', 'jobhunt'),
                             'desc' => '',
                             'hint_text' => esc_html__("Enter element title here", "jobhunt"),
@@ -96,7 +96,7 @@ if ( ! function_exists('jobcareer_pb_jobs') ) {
                         );
 
                         $cs_html_fields->cs_text_field($cs_opt_array);
-						
+
                         $cs_opt_array = array(
                             'name' => esc_html__('Section Sub Title', 'jobhunt'),
                             'desc' => '',
@@ -154,8 +154,8 @@ if ( ! function_exists('jobcareer_pb_jobs') ) {
 
                         $cs_html_fields->cs_select_field($cs_opt_array);
 
-												
-						$cs_opt_array = array(
+
+                        $cs_opt_array = array(
                             'name' => __('Map on Top', 'jobhunt'),
                             'desc' => '',
                             'hint_text' => __("ON/OFF map. This will display a map on top.", "jobhunt"),
@@ -236,21 +236,22 @@ if ( ! function_exists('jobcareer_pb_jobs') ) {
 
                         echo '</div>';
 
-						
-                         $job_views = array(
-                                    'advance' => esc_html__('Advance', 'jobhunt'),
-                                    'classic' => esc_html__('Classic', 'jobhunt'),
-                                    'detail' => esc_html__('Detail', 'jobhunt'),
-                                    'fancy' => esc_html__('Fancy', 'jobhunt'),
-                                    'grid' => esc_html__('Grid', 'jobhunt'),
-                                    'modren' => esc_html__('Modern', 'jobhunt'),
-                                    'simple' => esc_html__('Simple', 'jobhunt'),
-                                    'modernv1' => esc_html__('Modern V1', 'jobhunt'),
-                                    'boxed' => esc_html__('Boxed', 'jobhunt'),
-                                    'grid_classic' => esc_html__('Grid Classic', 'jobhunt'),
-                                );
-                        
-                         $job_views = apply_filters('liamdemoncuit_job_style_field_element',$job_views);
+
+                        $job_views = array(
+                            'advance' => esc_html__('Advance', 'jobhunt'),
+                            'classic' => esc_html__('Classic', 'jobhunt'),
+                            'detail' => esc_html__('Detail', 'jobhunt'),
+                            'fancy' => esc_html__('Fancy', 'jobhunt'),
+                            'grid' => esc_html__('Grid', 'jobhunt'),
+                            'modren' => esc_html__('Modern', 'jobhunt'),
+                            'simple' => esc_html__('Simple', 'jobhunt'),
+                            'modernv1' => esc_html__('Modern V1', 'jobhunt'),
+                            'boxed' => esc_html__('Boxed', 'jobhunt'),
+                            'grid_classic' => esc_html__('Grid Classic', 'jobhunt'),
+                            'grid_slider' => esc_html__('Grid Slider', 'jobhunt'),
+                        );
+
+                        $job_views = apply_filters('liamdemoncuit_job_style_field_element', $job_views);
 
                         $cs_opt_array = array(
                             'name' => esc_html__('Job View', 'jobhunt'),
@@ -325,7 +326,7 @@ if ( ! function_exists('jobcareer_pb_jobs') ) {
                         );
 
                         $cs_html_fields->cs_text_field($cs_opt_array);
-						
+
                         if ( isset($_POST['shortcode_element']) && $_POST['shortcode_element'] == 'shortcode' ) {
                             ?>
                             <ul class="form-elements insert-bg">

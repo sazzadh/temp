@@ -45,7 +45,7 @@
                             $cs_employee_employer_img = esc_url(wp_jobhunt::plugin_url() . 'assets/images/img-not-found16x9.jpg');
                         }
                         $cs_employee_emp_username = $cs_user->ID;
-
+                        $current_timestamp = current_time('timestamp');
                         $emp_jobpost = array( 'posts_per_page' => "1", 'post_type' => 'jobs', 'order' => "DESC", 'orderby' => 'post_date',
                             'post_status' => 'publish', 'ignore_sticky_posts' => 1,
                             'meta_query' => array(
@@ -54,6 +54,21 @@
                                     'value' => $cs_employee_emp_username,
                                     'compare' => '=',
                                 ),
+                                array(
+                                    'key' => 'cs_job_posted',
+                                    'value' => $current_timestamp,
+                                    'compare' => '<=',
+                                ),
+                                array(
+                                    'key' => 'cs_job_expired',
+                                    'value' => $current_timestamp,
+                                    'compare' => '>=',
+                                ),
+                                array(
+                                    'key' => 'cs_job_status',
+                                    'value' => 'active',
+                                    'compare' => '=',
+                                )
                             )
                         );
                         $loop_job_count = new WP_Query($emp_jobpost);
@@ -66,7 +81,7 @@
                                         <a href="<?php echo esc_url(get_author_posts_url($cs_user->ID)); ?>"><img alt="" src="<?php echo esc_url($cs_employee_employer_img); ?>"></a>
                                     </figure>
                                 </div>
-                                <span><?php echo esc_html__("Jobs at", 'jobhunt'); ?><a href="<?php echo esc_url(get_author_posts_url($cs_user->ID)); ?>"><?php echo esc_html__("Checkpoint", 'jobhunt'); ?></a>(<?php echo esc_html($count_job_post); ?>)</span> 
+                                <span><?php echo esc_html__("Jobs at", 'jobhunt'); ?><a href="<?php echo esc_url(get_author_posts_url($cs_user->ID)); ?>"><?php echo esc_html__($cs_user->display_name, 'jobhunt'); ?></a>(<?php echo esc_html($count_job_post); ?>)</span> 
                                 <?php
                                 $featured_employer = apply_filters('jobhunt_make_featured_tag', '', $cs_user->ID);
                                 echo force_balance_tags($featured_employer);

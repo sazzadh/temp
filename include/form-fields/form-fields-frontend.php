@@ -96,14 +96,26 @@ if ( ! class_exists('cs_form_fields_frontend') ) {
             if ( isset($required) && $required == 'yes' ) {
                 $cs_required = ' required="required"';
             }
+
+            $cs_input_type = 'text';
+            if ( isset($cust_type) && $cust_type != '' ) {
+                $cs_input_type = $cust_type;
+            }
+
             $cs_icon = '';
             $cs_icon = (isset($icon) and $icon <> '') ? '<i class="' . $icon . '"></i>' : '';
             //Calculate Remainings
-            $cs_output = '<div class="' . $classes . '">';
+            $cs_output = '';
+            if ( isset($classes) && ! empty($classes) ) {
+                $cs_output .= '<div class="' . $classes . '">';
+            }
             $html_id = ' id="cs_' . sanitize_html_class($id) . $cs_rand_value . '"';
             $cs_output .= $cs_icon;
-            $cs_output .= '<input type="text" ' . $cs_visibilty . $cs_required . ' class="cs-form-text cs-input form-control" ' . $html_id . $html_name . '  value="' . sanitize_text_field($value) . '" placeholder="' . $name . '" />';
-            $cs_output .= '</div>';
+            $cs_output .= '<input type="' . $cs_input_type . '" ' . $cs_visibilty . $cs_required . ' class="cs-form-text cs-input form-control" ' . $html_id . $html_name . '  value="' . sanitize_text_field($value) . '" placeholder="' . $name . '" />';
+            if ( isset($classes) && ! empty($classes) ) {
+                $cs_output .= '</div>';
+            }
+
             if ( isset($return) && $return == true ) {
                 return force_balance_tags($cs_output);
             } else {
@@ -296,6 +308,7 @@ if ( ! class_exists('cs_form_fields_frontend') ) {
             global $post, $pagenow;
             extract($params);
             $cs_onchange = '';
+            $cs_output = '';
             if ( $pagenow == 'post.php' ) {
                 $cs_value = get_post_meta($post->ID, 'cs_' . $id, true);
             } else {
@@ -326,14 +339,20 @@ if ( ! class_exists('cs_form_fields_frontend') ) {
             if ( isset($required) && $required == 'yes' ) {
                 $cs_required = ' required="required"';
             }
-            $cs_output .= $this->cs_form_label($name);
+            if ( isset($name) && $name != '' ) {
+                $cs_output .= $this->cs_form_label($name);
+            }
             $cs_output .= '<select' . $html_id . $html_name . ' ' . $cs_onchange . $cs_required . ' data-placeholder="' . esc_html__("Please Select", "jobhunt") . '" class="chosen-select">';
             foreach ( $options as $key => $option ) {
                 $cs_output .= '<option ' . selected($key, $value, false) . 'value="' . $key . '">' . $option . '</option>';
             }
             $cs_output .= '</select>';
-            $cs_output .= $holder;
-            $cs_output .= $this->cs_form_description($description);
+            if ( isset($holder) && $holder != '' ) {
+                $cs_output .= $holder;
+            }
+            if ( isset($description) && $description != '' ) {
+                $cs_output .= $this->cs_form_description($description);
+            }
             if ( isset($return) && $return == true ) {
                 return force_balance_tags($cs_output);
             } else {

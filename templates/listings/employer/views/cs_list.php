@@ -41,6 +41,7 @@
                             $cs_employee_employer_img = esc_url(wp_jobhunt::plugin_url() . 'assets/images/img-not-found16x9.jpg');
                         }
                         $cs_employee_emp_username = $cs_user->ID;
+                        $current_timestamp = current_time('timestamp');
                         $emp_jobpost = array( 'posts_per_page' => "1", 'post_type' => 'jobs', 'order' => "DESC", 'orderby' => 'post_date',
                             'post_status' => 'publish', 'ignore_sticky_posts' => 1,
                             'meta_query' => array(
@@ -49,6 +50,21 @@
                                     'value' => $cs_employee_emp_username,
                                     'compare' => '=',
                                 ),
+                                array(
+                                    'key' => 'cs_job_posted',
+                                    'value' => $current_timestamp,
+                                    'compare' => '<=',
+                                ),
+                                array(
+                                    'key' => 'cs_job_expired',
+                                    'value' => $current_timestamp,
+                                    'compare' => '>=',
+                                ),
+                                array(
+                                    'key' => 'cs_job_status',
+                                    'value' => 'active',
+                                    'compare' => '=',
+                                )
                             )
                         );
                         $loop_job_count = new WP_Query($emp_jobpost);

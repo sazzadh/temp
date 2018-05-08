@@ -938,7 +938,7 @@ if ( ! function_exists('cs_pagination') ) {
             if ( $page_id_all > 4 and $total_page > 6 )
                 $html .= "<li> <a>. . .</a> </li>";
             if ( $total_page > 1 ) {
-                for ( $i = $loop_start; $i <= $loop_end; $i ++ ) {
+                for ( $i = $loop_start; $i <= $loop_end; $i ++  ) {
                     if ( $i <> $page_id_all )
                         $html .= "<li><a href='?$query_string_variable=$i$qrystr$cs_job_counter'>" . $i . "</a></li>";
                     else
@@ -1009,7 +1009,7 @@ if ( ! function_exists('cs_ajax_pagination') ) {
             if ( $page_id_all > 4 and $total_page > 6 )
                 $html .= "<li> <a>. . .</a> </li>";
             if ( $total_page > 1 ) {
-                for ( $i = $loop_start; $i <= $loop_end; $i ++ ) {
+                for ( $i = $loop_start; $i <= $loop_end; $i ++  ) {
                     if ( $i <> $page_id_all )
                         $html .= "<li><a href='javascript:void(0);' onclick=\"cs_dashboard_tab_load('" . $tab . "', '" . $type . "', '" . $admin_url . "', '" . $uid . "', '" . $pack_array . "', '" . ($i) . "')\" >" . $i . "</a></li>";
                     else
@@ -1183,10 +1183,17 @@ if ( ! function_exists('cs_add_applied_job_withoutlogin_to_usermeta') ) {
             $phone = $_POST['phone'];
             $cover_letter = $_POST['cover_letter'];
             if ( username_exists($fullname) == null && email_exists($email) == false ) {
-                $user_id = wp_create_user($email, $phone, $email);
+
+                $parts = explode("@", $email); // get username from email id.
+                $username = $parts[0];
+
+                $user_id = wp_create_user($username, $phone, $email);
                 $user = get_user_by('id', $user_id);
-                $user->remove_role('subscriber');
-                $user->add_role('without_login');
+                //$user->remove_role('subscriber');
+                //$user->add_role('without_login');
+                $signup_user_role = 'cs_candidate';
+                wp_update_user(array( 'ID' => esc_sql($user_id), 'role' => esc_sql($signup_user_role), 'user_status' => 1 ));
+                update_user_meta($user_id, 'cs_allow_search', 'no');
                 update_user_meta($user_id, "first_name", $fullname);
                 update_user_meta($user_id, "cover_letter", $cover_letter);
                 update_user_meta($user_id, 'cs_user_last_activity_date', strtotime(current_time('d-m-Y H:i:s')));
@@ -1240,7 +1247,7 @@ if ( ! function_exists('cs_add_applied_job_withoutlogin_to_usermeta') ) {
                         do_action('jobhunt_applied_multi_jobs', $_POST['post_id'], $user);
                         $cs_email_template_atts = array(
                             'candidate_id' => $user,
-                            'job_id' => $_POST['job_id'],
+                            'job_id' => $_POST['post_id'],
                             'user_id' => $job_employer,
                         );
                         do_action('jobhunt_user_job_applied', $_POST, $user);
@@ -1359,9 +1366,7 @@ if ( ! function_exists('cs_add_applied_job_to_usermeta') ) {
 
 
         if ( $cs_user_apply_job == 'on' ) {
-
             $cs_memberhsip_packages_options = isset($cs_plugin_options['cs_membership_pkgs_options']) ? $cs_plugin_options['cs_membership_pkgs_options'] : '';
-
             $cs_packages_ids = array();
             if ( is_array($cs_memberhsip_packages_options) && sizeof($cs_memberhsip_packages_options) > 0 ) {
                 foreach ( $cs_memberhsip_packages_options as $cs_memberhsip_package ) {
@@ -1388,7 +1393,7 @@ if ( ! function_exists('cs_add_applied_job_to_usermeta') ) {
 
 
         if ( isset($user) && $user <> '' && $is_pckage ) {
-            
+
             do_action('jobhunt_applied_candidate_fill_profile', $user);
             $view = isset($_POST['view']) && $_POST['view'] != '' ? $_POST['view'] : '';
             $user_status = 'inactive';
@@ -1438,6 +1443,12 @@ if ( ! function_exists('cs_add_applied_job_to_usermeta') ) {
                     update_user_meta(cs_get_user_id(), 'cs-jobs-applied', $cs_wishlist);
                     $user_watchlist = get_user_meta(cs_get_user_id(), 'cs-jobs-applied', true);
                     $job_employer = get_post_meta($_POST['post_id'], 'cs_job_username', true);
+                    
+                    
+                    if(isset($_POST['cover_letter']) && !empty($_POST['cover_letter'])){
+                        update_user_meta($user, 'cs_updated_cover_letter_'.$_POST['post_id'].' ', $_POST['cover_letter']); // change cover letter data for each job apply
+                    }
+                    
 
                     cs_create_user_meta_list($_POST['post_id'], 'cs-user-jobs-applied-list', $user);
                     do_action('jobhunt_applied_multi_jobs', $_POST['post_id'], $user);
@@ -2795,7 +2806,7 @@ if ( ! function_exists('find_in_multiarray') ) {
         $top = sizeof($array);
         $k = 0;
         $new_array = array();
-        for ( $i = 0; $i <= $top; $i ++ ) {
+        for ( $i = 0; $i <= $top; $i ++  ) {
             if ( isset($array[$i]) ) {
                 $new_array[$k] = $array[$i];
                 $k ++;
@@ -3258,7 +3269,7 @@ if ( ! function_exists('cs_set_sort_filter') ) {
         $field_name_value = $_REQUEST['field_name_value'];
         $_SESSION[$field_name] = $field_name_value;
         set_transient($field_name, $field_name_value, HOUR_IN_SECONDS);
-        $json['type'] = esc_html__('success', 'jobhunt');
+        $json['type'] = 'success';
         echo json_encode($json);
         die();
     }
@@ -3487,7 +3498,7 @@ if ( ! function_exists('cs_str_replace_limit') ) {
         if ( is_bool($pos = (strpos($string, $search))) )
             return $string;
         $search_len = strlen($search);
-        for ( $i = 0; $i < $limit; $i ++ ) {
+        for ( $i = 0; $i < $limit; $i ++  ) {
             $string = substr_replace($string, $replace, $pos, $search_len);
             if ( is_bool($pos = (strpos($string, $search))) )
                 break;
@@ -4628,229 +4639,229 @@ if ( ! function_exists('jobhunt_applyjob_without_login_callback') ) {
         <?php }
         ?>
         <?php if ( $view != 'loggedin' ) { ?>
-        <div class="w-apply-job" id="without-login-switch" style="display:none;">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"><?php esc_html_e('apply for job', 'jobhunt') ?></h4>
-            <div class="cs-profile-contact-detail cs-contact-modal" data-adminurl="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
-                <?php
-                if ( $cs_job_apply_method == 'apply_cv' ) {
-                    ?>
-                    <form id="apply-job-<?php echo absint($job_post_id); ?>" class="apply-job" action="#" method="post" enctype="multipart/form-data" asif>
-                        <?php
-                        $error_class = '';
-                        $error_class = 'error-msg';
+            <div class="w-apply-job" id="without-login-switch" style="display:none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php esc_html_e('apply for job', 'jobhunt') ?></h4>
+                <div class="cs-profile-contact-detail cs-contact-modal" data-adminurl="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" id="logout">
+                    <?php
+                    if ( $cs_job_apply_method == 'apply_cv' ) {
                         ?>
-                        <div class="apply-job-response <?php echo esc_html($error_class); ?>">
-                        </div>
-                        <div class="input-filed">
-                            <label><?php _e('FUll Name', 'jobhunt'); ?><span class="required">*</span></label>
+                        <form id="apply-job-<?php echo absint($job_post_id); ?>" class="apply-job" action="#" method="post" enctype="multipart/form-data" asif>
                             <?php
-                            $cs_opt_array = array(
-                                'std' => $user_fullname,
-                                'cust_id' => 'fullname_' . $job_post_id,
-                                'cust_name' => 'fullname',
-                                'classes' => 'cs-required',
-                                    // 'extra_atr' => 'onkeyup="check_number_field_validation(\''. $job_post_id .'\', this);"',
-                            );
-                            $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                            $error_class = '';
+                            $error_class = 'error-msg';
                             ?>
-                        </div>
-                        <div class="input-filed">
-                            <label><?php _e('Email', 'jobhunt'); ?><span class="required">*</span></label>
-                            <?php
-                            $cs_opt_array = array(
-                                'std' => $user_email,
-                                'cust_id' => 'email_' . $job_post_id,
-                                'cust_name' => 'email',
-                                //'extra_atr' => 'onkeyup="check_number_field_validation(\''. $job_post_id .'\', this);"',
-                                'classes' => 'cs-required',
-                            );
-                            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                            ?>
-                        </div>
-                        <div class="input-filed">
-                            <label><?php _e('Phone Number', 'jobhunt'); ?><span class="required">*</span></label>
-                            <?php
-                            $cs_opt_array = array(
-                                'std' => $user_phone,
-                                'cust_id' => 'phone_num' . $job_post_id,
-                                'cust_name' => 'phone',
-                                'extra_atr' => 'onkeyup="check_number_field_validation(\'' . $job_post_id . '\', this);"',
-                                'classes' => 'cs-required',
-                            );
-                            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                            ?>
-                        </div>
-                        <div class="input-filed">
-                            <label><?php _e('Cover Letter', 'jobhunt'); ?><span class="required">*</span></label>
-                            <?php
-                            $cs_opt_array = array(
-                                'std' => strip_tags($user_cover_letter),
-                                'cust_id' => 'cover_letter_' . $job_post_id,
-                                'cust_name' => 'cover_letter',
-                                'extra_atr' => 'rows="5" placeholder="' . __('Write here...', 'jobhunt') . '" onkeyup="check_character_length(\'' . $job_post_id . '\');"',
-                                'classes' => 'cs-required',
-                            );
-                            $cs_form_fields2->cs_form_textarea_render($cs_opt_array);
-                            ?>
-                            <div class="length cover-letter-length">
-                                <div class="characters-holder">
-                                    <span><?php echo esc_html__('Min characters', 'jobhunt'); ?>: 10</span>
-                                    <span><?php echo esc_html__('Max characters', 'jobhunt'); ?>: 500</span>
-                                </div>
-                                <div class="remaining-characters" style="display:none;"><span>500</span> <?php echo esc_html__('characters remaining', 'jobhunt'); ?></div>
+                            <div class="apply-job-response <?php echo esc_html($error_class); ?>">
                             </div>
-                        </div>
-                        <div class="input-filed">
-                            <div class="cs-img-detail resume-upload">
-                                <div class="inner-title">
-                                    <label><?php _e('Your CV', 'jobhunt'); ?><span class="required">*</span></label>
-
+                            <div class="input-filed">
+                                <label><?php _e('FUll Name', 'jobhunt'); ?><span class="required">*</span></label>
+                                <?php
+                                $cs_opt_array = array(
+                                    'std' => $user_fullname,
+                                    'cust_id' => 'fullname_' . $job_post_id,
+                                    'cust_name' => 'fullname',
+                                    'classes' => 'cs-required',
+                                        // 'extra_atr' => 'onkeyup="check_number_field_validation(\''. $job_post_id .'\', this);"',
+                                );
+                                $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                ?>
+                            </div>
+                            <div class="input-filed">
+                                <label><?php _e('Email', 'jobhunt'); ?><span class="required">*</span></label>
+                                <?php
+                                $cs_opt_array = array(
+                                    'std' => $user_email,
+                                    'cust_id' => 'email_' . $job_post_id,
+                                    'cust_name' => 'email',
+                                    //'extra_atr' => 'onkeyup="check_number_field_validation(\''. $job_post_id .'\', this);"',
+                                    'classes' => 'cs-required',
+                                );
+                                $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                ?>
+                            </div>
+                            <div class="input-filed">
+                                <label><?php _e('Phone Number', 'jobhunt'); ?><span class="required">*</span></label>
+                                <?php
+                                $cs_opt_array = array(
+                                    'std' => $user_phone,
+                                    'cust_id' => 'phone_num' . $job_post_id,
+                                    'cust_name' => 'phone',
+                                    'extra_atr' => 'onkeyup="check_number_field_validation(\'' . $job_post_id . '\', this);"',
+                                    'classes' => 'cs-required',
+                                );
+                                $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                ?>
+                            </div>
+                            <div class="input-filed">
+                                <label><?php _e('Cover Letter', 'jobhunt'); ?><span class="required">*</span></label>
+                                <?php
+                                $cs_opt_array = array(
+                                    'std' => strip_tags($user_cover_letter),
+                                    'cust_id' => 'cover_letter_' . $job_post_id,
+                                    'cust_name' => 'cover_letter',
+                                    'extra_atr' => 'rows="5" placeholder="' . __('Write here...', 'jobhunt') . '" onkeyup="check_character_length(\'' . $job_post_id . '\');"',
+                                    'classes' => 'cs-required',
+                                );
+                                $cs_form_fields2->cs_form_textarea_render($cs_opt_array);
+                                ?>
+                                <div class="length cover-letter-length">
+                                    <div class="characters-holder">
+                                        <span><?php echo esc_html__('Min characters', 'jobhunt'); ?>: 10</span>
+                                        <span><?php echo esc_html__('Max characters', 'jobhunt'); ?>: 500</span>
+                                    </div>
+                                    <div class="remaining-characters" style="display:none;"><span>500</span> <?php echo esc_html__('characters remaining', 'jobhunt'); ?></div>
                                 </div>
-                                <div class="upload-btn-div">
-                                    <div class="dragareamain" style="padding-bottom:0px;">
-                                        <script type="text/ecmascript">
-                                            jQuery(document).ready(function(){
-                                            jQuery('.cs-uploadimg').change( function(e) {
-                                            var img = URL.createObjectURL(e.target.files[0]);
-                                            //var img = URL.createObjectURL(e.target.files[0]['type']);
-                                            jQuery('#cs_candidate_cv').attr('value', img);
-                                            });
-                                            });
-                                        </script>
+                            </div>
+                            <div class="input-filed">
+                                <div class="cs-img-detail resume-upload">
+                                    <div class="inner-title">
+                                        <label><?php _e('Your CV', 'jobhunt'); ?><span class="required">*</span></label>
 
-                                        <div class="fileUpload uplaod-btn btn csborder-color cs-color">
-                                            <span class="cs-color"><?php esc_html_e('Browse', 'jobhunt'); ?></span>
-                                            <label class="browse-icon">
+                                    </div>
+                                    <div class="upload-btn-div">
+                                        <div class="dragareamain" style="padding-bottom:0px;">
+                                            <script type="text/ecmascript">
+                                                jQuery(document).ready(function(){
+                                                jQuery('.cs-uploadimg').change( function(e) {
+                                                var img = URL.createObjectURL(e.target.files[0]);
+                                                //var img = URL.createObjectURL(e.target.files[0]['type']);
+                                                jQuery('#cs_candidate_cv').attr('value', img);
+                                                });
+                                                });
+                                            </script>
+
+                                            <div class="fileUpload uplaod-btn btn csborder-color cs-color">
+                                                <span class="cs-color"><?php esc_html_e('Browse', 'jobhunt'); ?></span>
+                                                <label class="browse-icon">
+                                                    <?php
+                                                    $cs_opt_array = array(
+                                                        'std' => esc_html__('Browse', 'jobhunt'),
+                                                        'cust_id' => 'media_upload',
+                                                        'cust_name' => 'media_upload',
+                                                        'cust_type' => 'file',
+                                                        'force_std' => true,
+                                                        'extra_atr' => ' onchange="checkName(this, \'cs_candidate_cv\', \'button_action\')"',
+                                                        'classes' => 'upload cs-uploadimg cs-color csborder-color cs-required',
+                                                    );
+                                                    $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                                    ?>
+                                                </label>
+                                            </div>
+
+                                            <div id="selecteduser-cv">
                                                 <?php
+                                                //if (isset($cs_candidate_cv) and $cs_candidate_cv <> '' && (!isset($cs_candidate_cv['error']))) {
                                                 $cs_opt_array = array(
-                                                    'std' => esc_html__('Browse', 'jobhunt'),
-                                                    'cust_id' => 'media_upload',
-                                                    'cust_name' => 'media_upload',
-                                                    'cust_type' => 'file',
-                                                    'force_std' => true,
-                                                    'extra_atr' => ' onchange="checkName(this, \'cs_candidate_cv\', \'button_action\')"',
-                                                    'classes' => 'upload cs-uploadimg cs-color csborder-color cs-required',
+                                                    'std' => $cs_candidate_cv,
+                                                    'cust_id' => 'cs_candidate_cv',
+                                                    'cust_name' => 'cs_candidate_cv',
+                                                    'cust_type' => 'hidden',
                                                 );
                                                 $cs_form_fields2->cs_form_text_render($cs_opt_array);
                                                 ?>
-                                            </label>
-                                        </div>
-
-                                        <div id="selecteduser-cv">
-                                            <?php
-                                            //if (isset($cs_candidate_cv) and $cs_candidate_cv <> '' && (!isset($cs_candidate_cv['error']))) {
-                                            $cs_opt_array = array(
-                                                'std' => $cs_candidate_cv,
-                                                'cust_id' => 'cs_candidate_cv',
-                                                'cust_name' => 'cs_candidate_cv',
-                                                'cust_type' => 'hidden',
-                                            );
-                                            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                                            ?>
-                                            <div class="alert alert-dismissible user-resume" id="cs_candidate_cv_box">
-                                                <div>
-                                                    <?php
-                                                    if ( isset($cs_candidate_cv) && $cs_candidate_cv != '' ) {
-                                                        if ( cs_check_coverletter_exist($cs_candidate_cv) ) {
-                                                            $uploads = wp_upload_dir();
-                                                            echo '<a target="_blank" href="' . esc_url($cs_candidate_cv) . '">';
-                                                            // uploaded file
-                                                            $parts = preg_split('~_(?=[^_]*$)~', basename($cs_candidate_cv));
-                                                            echo esc_html($parts[0]); // outputs "one_two_three"
-                                                            echo '</a>';
-                                                            ?>
-                                                            <div class="gal-edit-opts close"><a href="javascript:cs_del_cover_letter('cs_candidate_cv')" class="delete">
-                                                                    <span aria-hidden="true">×</span></a>
-                                                            </div>
-                                                            <?php
-                                                        } else {
-                                                            esc_html_e("File not Available", "jobhunt");
+                                                <div class="alert alert-dismissible user-resume" id="cs_candidate_cv_box">
+                                                    <div>
+                                                        <?php
+                                                        if ( isset($cs_candidate_cv) && $cs_candidate_cv != '' ) {
+                                                            if ( cs_check_coverletter_exist($cs_candidate_cv) ) {
+                                                                $uploads = wp_upload_dir();
+                                                                echo '<a target="_blank" href="' . esc_url($cs_candidate_cv) . '">';
+                                                                // uploaded file
+                                                                $parts = preg_split('~_(?=[^_]*$)~', basename($cs_candidate_cv));
+                                                                echo esc_html($parts[0]); // outputs "one_two_three"
+                                                                echo '</a>';
+                                                                ?>
+                                                                <div class="gal-edit-opts close"><a href="javascript:cs_del_cover_letter('cs_candidate_cv')" class="delete">
+                                                                        <span aria-hidden="true">×</span></a>
+                                                                </div>
+                                                                <?php
+                                                            } else {
+                                                                esc_html_e("File not Available", "jobhunt");
+                                                            }
                                                         }
-                                                    }
-                                                    ?>
+                                                        ?>
+                                                    </div>
                                                 </div>
+                                                <?php //}        ?>				
                                             </div>
-                                            <?php //}        ?>				
                                         </div>
+                                        <span class="cs-status-msg-cv-upload"><?php esc_html_e('Suitable files are .doc,docx,rft,pdf & .pdf', 'jobhunt'); ?></span>              
                                     </div>
-                                    <span class="cs-status-msg-cv-upload"><?php esc_html_e('Suitable files are .doc,docx,rft,pdf & .pdf', 'jobhunt'); ?></span>              
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="submit-btn input-button-loader" id="apply_job_<?php echo $job_post_id; ?>">
-                            <?php if ( is_user_logged_in() ) { ?>
-                                <a class="btn large like applied_icon<?php echo $class_apply; ?>" onclick="cs_addjobs_left_to_applied('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', '<?php echo intval($job_post_id); ?>', this)" >
-                                    <span>
-                                        <i class="icon-briefcase4"></i>
-                                    </span><?php
-                                    $apply_job = esc_html__('Apply Now', 'jobhunt');
-                                    echo $apply_job;
+                            <div class="submit-btn input-button-loader" id="apply_job_<?php echo $job_post_id; ?>">
+                                <?php if ( is_user_logged_in() ) { ?>
+                                    <a class="btn large like applied_icon<?php echo $class_apply; ?>" onclick="cs_addjobs_left_to_applied('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', '<?php echo intval($job_post_id); ?>', this)" >
+                                        <span>
+                                            <i class="icon-briefcase4"></i>
+                                        </span><?php
+                                        $apply_job = esc_html__('Apply Now', 'jobhunt');
+                                        echo $apply_job;
+                                        ?>
+                                    </a>
+                                    <?php
+                                    //$apply_job_action = 'onclick="cs_addjobs_left_to_applied(\'' . esc_url(admin_url('admin-ajax.php')) . '\', ' . $job_post_id . ')"';
+                                } else {
                                     ?>
-                                </a>
-                                <?php
-                                //$apply_job_action = 'onclick="cs_addjobs_left_to_applied(\'' . esc_url(admin_url('admin-ajax.php')) . '\', ' . $job_post_id . ')"';
-                            } else {
+                                    <a class="btn-without-login<?php echo $class_apply; ?>" onclick="jobhunt_add_proposal('<?php echo (admin_url('admin-ajax.php')); ?>', '<?php echo intval($job_post_id); ?>', this)" >
+                                        <span>
+                                            <i class="icon-briefcase4"></i>
+                                        </span><?php
+                                        $apply_job = esc_html__('Apply Now', 'jobhunt');
+                                        echo $apply_job;
+                                        ?>
+                                    </a>
+                                    <?php
+                                    $cs_opt_array = array(
+                                        'std' => $job_post_id,
+                                        'cust_id' => 'post_id_' . $job_post_id,
+                                        'cust_name' => 'post_id',
+                                        'cust_type' => 'hidden',
+                                    );
+                                    $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                    $cs_opt_array = array(
+                                        'std' => 'cs_add_applied_job_withoutlogin_to_usermeta',
+                                        'cust_id' => 'action' . $job_post_id,
+                                        'cust_name' => 'action',
+                                        'cust_type' => 'hidden',
+                                    );
+                                    $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                }
                                 ?>
-                                <a class="btn-without-login<?php echo $class_apply; ?>" onclick="jobhunt_add_proposal('<?php echo (admin_url('admin-ajax.php')); ?>', '<?php echo intval($job_post_id); ?>', this)" >
-                                    <span>
-                                        <i class="icon-briefcase4"></i>
-                                    </span><?php
-                                    $apply_job = esc_html__('Apply Now', 'jobhunt');
-                                    echo $apply_job;
-                                    ?>
-                                </a>
-                                <?php
-                                $cs_opt_array = array(
-                                    'std' => $job_post_id,
-                                    'cust_id' => 'post_id_' . $job_post_id,
-                                    'cust_name' => 'post_id',
-                                    'cust_type' => 'hidden',
-                                );
-                                $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                                $cs_opt_array = array(
-                                    'std' => 'cs_add_applied_job_withoutlogin_to_usermeta',
-                                    'cust_id' => 'action' . $job_post_id,
-                                    'cust_name' => 'action',
-                                    'cust_type' => 'hidden',
-                                );
-                                $cs_form_fields2->cs_form_text_render($cs_opt_array);
-                            }
-                            ?>
-                            <a class="cs-bgcolor cs-wlogin-switch">Login Here</a>
-                            <div class="apply-loader"></div>
-                        </div>
-                    </form>
-                <?php } ?>
-                <?php
-                if ( $cs_job_apply_method == 'apply_external_link' ) {
+                                <a class="cs-bgcolor cs-wlogin-switch">Login Here</a>
+                                <div class="apply-loader"></div>
+                            </div>
+                        </form>
+                    <?php } ?>
+                    <?php
+                    if ( $cs_job_apply_method == 'apply_external_link' ) {
 
-                    $extenal_message = esc_html__('Oops ! There is no external link to apply for this job', 'jobhunt');
-                    $cs_job_external_url = get_post_meta($job_post_id, "cs_external_url_id", true);
-                    $url_flag = false;
-                    if ( isset($cs_job_external_url) && ! empty($cs_job_external_url) ) {
-                        $url_flag = true;
-                        $extenal_message = esc_html__('Click "Link" button to apply Job via External Url', 'jobhunt');
-                    }
-                    ?>
-                    <div class="input-filed external-apply">
-                        <label><?php echo ($extenal_message); ?></label>
-                        <?php
-                        if ( $url_flag ) {
-                            ?>
-                            <a class="external_link" target="_blank" href="<?php echo esc_url($cs_job_external_url); ?>"><?php esc_html_e('Link', 'jobhunt'); ?></a>
-                            <?php
+                        $extenal_message = esc_html__('Oops ! There is no external link to apply for this job', 'jobhunt');
+                        $cs_job_external_url = get_post_meta($job_post_id, "cs_external_url_id", true);
+                        $url_flag = false;
+                        if ( isset($cs_job_external_url) && ! empty($cs_job_external_url) ) {
+                            $url_flag = true;
+                            $extenal_message = esc_html__('Click "Link" button to apply Job via External Url', 'jobhunt');
                         }
                         ?>
-                    </div>
-                <?php } ?>
+                        <div class="input-filed external-apply">
+                            <label><?php echo ($extenal_message); ?></label>
+                            <?php
+                            if ( $url_flag ) {
+                                ?>
+                                <a class="external_link" target="_blank" href="<?php echo esc_url($cs_job_external_url); ?>"><?php esc_html_e('Link', 'jobhunt'); ?></a>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                    <?php } ?>
+                </div>
+
+
+
             </div>
-
-
-
-        </div>
-        <?php }?>
+        <?php } ?>
         <?php if ( $view == 'loggedin' ) { ?>
             <div class="modal fade w-apply-job" id="cs-apply-job-<?php echo absint($job_post_id); ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
@@ -4960,7 +4971,7 @@ if ( ! function_exists('jobhunt_applyjob_without_login_callback') ) {
                                                                     'cust_type' => 'file',
                                                                     'force_std' => true,
                                                                     'extra_atr' => ' onchange="checkName(this, \'cs_candidate_cv\', \'button_action\')"',
-                                                                    'classes' => 'upload cs-uploadimg cs-color csborder-color cs-required',
+                                                                    'classes' => 'upload cs-uploadimg cs-color csborder-color',
                                                                 );
                                                                 $cs_form_fields2->cs_form_text_render($cs_opt_array);
                                                                 ?>
@@ -5133,4 +5144,3 @@ if ( ! function_exists('jobhunt_signup_direct_login_callback') ) {
 }
 
 
-//do_action('jobhunt_applyjob_without_login', 1450); 

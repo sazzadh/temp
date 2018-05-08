@@ -220,25 +220,33 @@ if ( ! function_exists('cs_ajax_candidate_profile') ) {
                                         $cs_form_fields2->cs_form_text_render($cs_opt_array);
                                         ?>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                        <label><?php esc_html_e('Allow In Search', 'jobhunt'); ?></label>
-                                        <div class="select-holder">
-                                            <?php
-                                            $cs_opt_array = array(
-                                                'id' => 'allow_search',
-                                                'std' => $cs_allow_search,
-                                                'desc' => '',
-                                                'extra_atr' => 'data-placeholder="' . esc_html__("Please Select", "jobhunt") . '"',
-                                                'classes' => 'form-control chosen-default chosen-select-no-single',
-                                                'options' => array( '' => esc_html__('Please Select', 'jobhunt'), 'yes' => esc_html__('Yes', 'jobhunt'), 'no' => esc_html__('No', 'jobhunt') ),
-                                                'hint_text' => '',
-                                            );
 
-                                            $cs_form_fields2->cs_form_select_render($cs_opt_array);
-                                            ?>
-                                        </div>
-                                    </div>
                                     <?php
+                                    global $cs_plugin_options;
+                                    $cs_allow_in_search_user_switch = isset($cs_plugin_options['cs_allow_in_search_user_switch']) ? $cs_plugin_options['cs_allow_in_search_user_switch'] : '';
+                                    if ( isset($cs_allow_in_search_user_switch) && $cs_allow_in_search_user_switch == 'on' ) {
+                                        ?>
+
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <label><?php esc_html_e('Allow in search & listing', 'jobhunt'); ?></label>
+                                            <div class="select-holder">
+                                                <?php
+                                                $cs_opt_array = array(
+                                                    'id' => 'allow_search',
+                                                    'std' => $cs_allow_search,
+                                                    'desc' => '',
+                                                    'extra_atr' => 'data-placeholder="' . esc_html__("Please Select", "jobhunt") . '"',
+                                                    'classes' => 'form-control chosen-default chosen-select-no-single',
+                                                    'options' => array( '' => esc_html__('Please Select', 'jobhunt'), 'yes' => esc_html__('Yes', 'jobhunt'), 'no' => esc_html__('No', 'jobhunt') ),
+                                                    'hint_text' => '',
+                                                );
+
+                                                $cs_form_fields2->cs_form_select_render($cs_opt_array);
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }
                                     $specialisms_label = esc_html__('Specialisms', 'jobhunt');
                                     $specialisms_label = apply_filters('jobhunt_replace_specialisms_to_categories', $specialisms_label);
                                     ?>
@@ -907,9 +915,8 @@ if ( ! function_exists('cs_ajax_candidate_membership_packages') ) {
                     $cs_html .= esc_html__('You have successfully subscribed free package.', 'jobhunt');
                 }
             } else {
-             echo '<div class="cs-record"> <i class="icon-warning2"> </i> ' . cs_info_messages_listing(esc_html__(" You already have credits to Apply job. You can't buy package until it is expired.", 'jobhunt')) . '</div>';
-        }
-            
+                echo '<div class="cs-record"> <i class="icon-warning2"> </i> ' . cs_info_messages_listing(esc_html__(" You already have credits to Apply job. You can't buy package until it is expired.", 'jobhunt')) . '</div>';
+            }
         }
         do_action('jobhunt_subscribing_package');
         echo $cs_html;
@@ -1107,10 +1114,10 @@ if ( ! function_exists('cs_ajax_candidate_membership_packages') ) {
                                     }
                                     ?>
                                     <li class="holder-<?php
-                                    echo intval($post->ID);
-                                    if ( $cs_job_expired < strtotime(current_time('d-m-Y')) ) {
-                                        echo ' cs-expired';
-                                    }
+                        echo intval($post->ID);
+                        if ( $cs_job_expired < strtotime(current_time('d-m-Y')) ) {
+                            echo ' cs-expired';
+                        }
                                     ?>">
                                         <a class="hiring-img" href="<?php echo esc_url(get_permalink($post->ID)); ?>"><img src="<?php echo esc_url($cs_jobs_thumb_url); ?>" alt=""></a>
                                         <div class="company-detail-inner">
@@ -1132,13 +1139,13 @@ if ( ! function_exists('cs_ajax_candidate_membership_packages') ) {
                                         </div>
                                         <div class="company-date-option">
                                             <span><?php
-                                                $finded = in_multiarray($post->ID, $cs_jobapplied_array, 'post_id');
-                                                if ( $finded != '' )
-                                                    if ( $cs_jobapplied_array[$finded[0]]['date_time'] != '' ) {
-                                                        echo date_i18n(get_option('date_format'), $cs_jobapplied_array[$finded[0]]['date_time']);
-                                                    }
-                                                ?></span>
-                                            <?php
+                        $finded = in_multiarray($post->ID, $cs_jobapplied_array, 'post_id');
+                        if ( $finded != '' )
+                            if ( $cs_jobapplied_array[$finded[0]]['date_time'] != '' ) {
+                                echo date_i18n(get_option('date_format'), $cs_jobapplied_array[$finded[0]]['date_time']);
+                            }
+                                            ?></span>
+                                                <?php
                                             if ( $cs_job_expired < strtotime(current_time('d-m-Y')) ) {
                                                 ?>
                                                 <div class="control">
@@ -1340,10 +1347,10 @@ if ( ! function_exists('cs_ajax_candidate_membership_packages') ) {
                     do_action('jobhunt_user_fields_frontend_dashboard', $cs_post_id);
                     ?>
                 </div><?php
-            } else {
-                esc_html_e('Please create user profile.', 'jobhunt');
-            }
-            ?>
+        } else {
+            esc_html_e('Please create user profile.', 'jobhunt');
+        }
+                ?>
             <script>
                 jQuery(document).ready(function () {
                     jQuery('[data-toggle="tooltip"]').tooltip();

@@ -735,7 +735,7 @@ function jobhunt_add_proposal(admin_url, job_id, obj, view) {
         jQuery('#apply-job-' + job_id + ' .apply-job-response').html(jobhunt_functions_vars.fill_all_fields);
         cs_hide_button_loader(thisObj);
         return false;
-    } else if (cover_letter_val.length < jobhunt_functions_vars.min_length || cover_letter_val.length > jobhunt_functions_vars.max_length) {
+    } else if (typeof cover_letter_val !== 'undefined' && (cover_letter_val.length < jobhunt_functions_vars.min_length || cover_letter_val.length > jobhunt_functions_vars.max_length)) {
         jQuery('#apply-job-' + job_id + ' .apply-job-response').addClass('error-msg');
         jQuery('#apply-job-' + job_id + ' .apply-job-response').removeClass('success-msg');
         jQuery('#apply-job-' + job_id + ' .apply-job-response').html(jobhunt_functions_vars.cover_length);
@@ -743,11 +743,8 @@ function jobhunt_add_proposal(admin_url, job_id, obj, view) {
         return false;
     }
     jQuery('#apply_job_' + job_id + ' .btn-without-login').html("<span><i class='icon-spinner8 icon-spin'></i></span>");
-    
-    
-    
     var fd = new FormData();
-    var file_data = fd.append('media_upload', jQuery('input[type=file]')[0].files[0]);
+    var file_data = fd.append('media_upload', jQuery('#apply-job-' + job_id + ' input[type=file]')[0].files[0]);
     var other_data = jQuery('#apply-job-' + job_id).serializeArray();
     jQuery.each(other_data, function (key, input) {
         fd.append(input.name, input.value);
@@ -761,20 +758,17 @@ function jobhunt_add_proposal(admin_url, job_id, obj, view) {
         dataType: "json",
         success: function (response) {
             if (response.status == 0) {
-                jQuery('#apply_job_' + job_id + ' .btn-without-login').html("<span><i class='icon-briefcase4'></i></span>"+jobhunt_functions_vars.apply_now);
+                jQuery('#apply_job_' + job_id + ' .btn-without-login').html("<span><i class='icon-briefcase4'></i></span>" + jobhunt_functions_vars.apply_now);
                 jQuery('#apply-job-' + job_id + ' .apply-job-response').addClass('error-msg');
                 jQuery('#apply-job-' + job_id + ' .apply-job-response').removeClass('success-msg');
                 jQuery('#apply-job-' + job_id + ' .apply-job-response').html(response.msg);
             } else {
-                jQuery('#apply_job_' + job_id + ' .btn-without-login').html("<span><i class='icon-thumbsup'></i></span>"+jobhunt_functions_vars.applied);
+                jQuery('#apply_job_' + job_id + ' .btn-without-login').html("<span><i class='icon-thumbsup'></i></span>" + jobhunt_functions_vars.applied);
                 jQuery('#apply-job-' + job_id + ' .apply-job-response').removeClass('error-msg');
                 jQuery('#apply-job-' + job_id + ' .apply-job-response').addClass('success-msg');
                 jQuery('#apply-job-' + job_id + ' .apply-job-response').html(response.msg);
                 jQuery('#apply-job-' + job_id + '  .input-filed .cs-img-detail .upload-btn-div .dragareamain #selecteduser-cv').html('');
                 jQuery('#apply-job-' + job_id)[0].reset();
-
-
-
                 jQuery('#apply-btn-' + job_id).html(btn_applied_icon + btn_applied_label);
                 jQuery('#apply-btn-' + job_id).removeAttr('data-target');
                 jQuery('#apply-btn-' + job_id).removeAttr('data-toggle');
@@ -794,20 +788,20 @@ function jobhunt_add_proposal(admin_url, job_id, obj, view) {
 jQuery(document).on('click', '.loggedin-cv-apply', function () {
     var thisobj = jQuery(this);
     var job_id = thisobj.data('job-id');
-    
+
     jQuery('#apply-job-' + job_id + ' .apply-job-response').removeClass('error-msg');
     jQuery('#apply-job-' + job_id + ' .apply-job-response').removeClass('success-msg');
     jQuery('#apply-job-' + job_id + ' .apply-job-response').html('');
-    
+
 });
 jQuery(document).on('click', '.without-login', function () {
     var thisobj = jQuery(this);
     var job_id = thisobj.data('job-id');
-    
+
     jQuery('#apply-job-' + job_id + ' .apply-job-response').removeClass('error-msg');
     jQuery('#apply-job-' + job_id + ' .apply-job-response').removeClass('success-msg');
     jQuery('#apply-job-' + job_id + ' .apply-job-response').html('');
-    
+
 });
 
 
@@ -2596,10 +2590,10 @@ function ajax_profile_form_save(admin_url, theme_url, form_id) {
                     jQuery('#profile .user-error-msg').hide();
                 }
                 jQuery('#candidate-dashboard .main-cs-loader').html('');
-                jQuery('#cs_alerts').html('<div class="cs-remove-msg"><i class="icon-check-circle"></i>' + response + '</div>');
-                classes = jQuery('#cs_alerts').attr('class');
+                jQuery('.cs_alerts').html('<div class="cs-remove-msg"><i class="icon-check-circle"></i>' + response + '</div>');
+                classes = jQuery('.cs_alerts').attr('class');
                 classes = classes + " active";
-                jQuery('#cs_alerts').addClass(classes);
+                jQuery('.cs_alerts').addClass(classes);
 
                 jQuery.ajax({
                     type: "POST",
@@ -2609,6 +2603,7 @@ function ajax_profile_form_save(admin_url, theme_url, form_id) {
                     success: function (skills_response) {
                         jQuery('.skill-percent-main').html('');
                         jQuery('.skill-percent-main').html(skills_response);
+                        
                     }
                 });
 
@@ -2619,13 +2614,13 @@ function ajax_profile_form_save(admin_url, theme_url, form_id) {
         });
     } else {
         jQuery('#candidate-dashboard .main-cs-loader').html('');
-        jQuery('#cs_alerts').html('<div class="cs-remove-msg error"><i class="icon-warning2"></i>' + validation_message + '</div>');
-        classes = jQuery('#cs_alerts').attr('class');
+        jQuery('.cs_alerts').html('<div class="cs-remove-msg error"><i class="icon-warning2"></i>' + validation_message + '</div>');
+        classes = jQuery('.cs_alerts').attr('class');
         classes = classes + " active";
-        jQuery('#cs_alerts').addClass(classes);
+        jQuery('.cs_alerts').addClass(classes);
 
         setTimeout(function () {
-            jQuery('#cs_alerts').removeClass("active");
+            jQuery('.cs_alerts').removeClass("active");
         }, 4000);
     }
     //return false;
@@ -2692,8 +2687,15 @@ function ajax_employer_profile_form_save(admin_url, theme_url, form_id) {
             }
         });
     } else {
+        //jQuery('#employer-dashboard .main-cs-loader').html('');
         jQuery('#employer-dashboard .main-cs-loader').html('');
-        show_alert_msg(validation_message);
+        jQuery('.cs_alerts').html('<div class="cs-remove-msg error"><i class="icon-warning2"></i>' + validation_message + '</div>');
+        classes = jQuery('.cs_alerts').attr('class');
+        classes = classes + " active";
+        jQuery('.cs_alerts').addClass(classes);
+        setTimeout(function () {
+            jQuery('.cs_alerts').removeClass("active");
+        }, 4000);
     }
     //return false;
 }
@@ -2964,14 +2966,13 @@ function cs_addjobs_to_applied(admin_url, post_id, obj) {
  * add applied list for left box
  */
 function cs_addjobs_left_to_applied(admin_url, post_id, obj, view) {
-    
+
     jQuery('#apply-job-' + post_id + ' .apply-job-response').removeClass('error-msg');
     jQuery('#apply-job-' + post_id + ' .apply-job-response').removeClass('success-msg');
     jQuery('#apply-job-' + post_id + ' .apply-job-response').html('');
-    
+
     var view = view || '';
     "use strict";
-    var dataString = 'post_id=' + post_id + '&view=' + view + '&action=cs_add_applied_job_to_usermeta';
     if (view === 'modern-v1') {
         var old_html = jQuery(obj).html();
         jQuery(obj).html('<span><i class="icon-spinner8 icon-spin"></i></span>');
@@ -2979,7 +2980,7 @@ function cs_addjobs_left_to_applied(admin_url, post_id, obj, view) {
         var old_html = jQuery(obj).closest('div').find('.applied_icon').html();
         jQuery(obj).closest('div').find('.applied_icon').html('<span><i class="icon-spinner8 icon-spin"></i></span>');
     }
-    
+
     var cover_letter_val = jQuery('#cover_letter_' + post_id).val();
     var is_form_validate = cs_validate_form_fields('#apply-job-' + post_id + ' .cs-required');
     if (is_form_validate === false) {
@@ -2988,7 +2989,7 @@ function cs_addjobs_left_to_applied(admin_url, post_id, obj, view) {
         jQuery('#apply-job-' + post_id + ' .apply-job-response').html(jobhunt_functions_vars.fill_all_fields);
         jQuery(obj).parents('div').find('.applied_icon').html(old_html);
         return false;
-    } else if (cover_letter_val.length < jobhunt_functions_vars.min_length || cover_letter_val.length > jobhunt_functions_vars.max_length) {
+    } else if (typeof cover_letter_val !== 'undefined' && (cover_letter_val.length < jobhunt_functions_vars.min_length || cover_letter_val.length > jobhunt_functions_vars.max_length)) {
         jQuery('#apply-job-' + post_id + ' .apply-job-response').addClass('error-msg');
         jQuery('#apply-job-' + post_id + ' .apply-job-response').removeClass('success-msg');
         jQuery('#apply-job-' + post_id + ' .apply-job-response').html(jobhunt_functions_vars.cover_length);
@@ -2996,13 +2997,16 @@ function cs_addjobs_left_to_applied(admin_url, post_id, obj, view) {
         return false;
     }
     
+    var dataString = 'post_id=' + post_id + '&view=' + view + '&cover_letter=' + cover_letter_val + '&action=cs_add_applied_job_to_usermeta';
+    
+    
     jQuery.ajax({
         type: "POST",
         url: admin_url,
         data: dataString,
         dataType: "json",
         success: function (response) {
-
+            console.log(response);
             if (view === 'modern-v1') {
                 if (response.status == 0) {
                     jQuery(obj).html(old_html);
@@ -3023,7 +3027,7 @@ function cs_addjobs_left_to_applied(admin_url, post_id, obj, view) {
                 }
             }
             setTimeout(function () {
-                jQuery('#cs-apply-job-' + job_id + ' .close').click();
+                jQuery('#cs-apply-job-' + post_id + ' .close').click();
             }, 3000);
             if (typeof cs_remove_apply_job_onclick !== 'undefined' && $.isFunction(cs_remove_apply_job_onclick)) {
                 cs_remove_apply_job_onclick(obj);
@@ -3784,8 +3788,8 @@ function trigger_func(btnid, job_id) {
     }
     if (typeof job_id !== 'undefined' && job_id !== '') {
         jQuery('.apply-without-login').show();
-        if (jQuery('.login-form.cs-login-pbox .apply-without-login').length > 0) {
-            jQuery('.login-form.cs-login-pbox .apply-without-login').html('<a data-job-id="' + job_id + '" href="javascript:void(0);" class="without-login"><span> <i class="icon-briefcase4"></i></span>'+jobhunt_functions_vars.apply_without_login+'</a>');
+        if (jQuery('.apply-without-login').length > 0) {
+            jQuery('.apply-without-login').html('<a data-job-id="' + job_id + '" href="javascript:void(0);" class="without-login"><span> <i class="icon-briefcase4"></i></span>' + jobhunt_functions_vars.apply_without_login + '</a>');
         }
         jQuery('.wp-user-form').append('<input type="hidden" class="detail_redirect" name="detail_redirect" value="true">');
     }
@@ -4881,3 +4885,4 @@ function cs_show_form_row(field_val) {
 jQuery(document).on('click', '.woocommerce-checkout-payment #place_order', function () {
     jQuery(this).closest('.place-order').append('<span class="checkout-loader"><i class="icon-spinner8 icon-spin"></i></span>');
 });
+

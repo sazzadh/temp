@@ -1,5 +1,6 @@
-<?php if ( isset($qrystr) && $qrystr != '' ) { ?>
-
+<?php 
+$qrystr = apply_filters('jobhunt_shahran_candidates_search_keyword',$qrystr);
+if ( isset($qrystr) && $qrystr != '' ) { ?>
     <div class="your-search">
         <ul class="filtration-tags">
             <?php

@@ -127,14 +127,14 @@ update_option('wooC_current_page', cs_server_protocol() . $_SERVER['HTTP_HOST'] 
                                                         <?php cs_profile_menu($action, $uid); ?>
                                                         <div class="tab-content col-lg-9 col-md-9 col-sm-12 col-xs-12 " id="candidate-dashboard" data-validationmsg="<?php esc_html_e("Please ensure that all required fields are completed and formatted correctly", "jobhunt"); ?>">
                                                             <!-- warning popup -->
-                                                            <div id="id_confrmdiv">
+<!--                                                            <div id="id_confrmdiv">
                                                                 <div class="cs-confirm-container">
                                                                     <i class="icon-exclamation2"></i>
-                                                                    <div class="message"><?php esc_html_e("Do you really want to delete?", "jobhunt"); ?></div>
-                                                                    <a href="javascript:void(0);" id="id_truebtn"><?php esc_html_e("Yes Delete It", "jobhunt"); ?></a>
-                                                                    <a href="javascript:void(0);" id="id_falsebtn"><?php esc_html_e("Cancel", "jobhunt"); ?></a>
+                                                                    <div class="message"><?php //esc_html_e("Do you really want to delete?", "jobhunt"); ?></div>
+                                                                    <a href="javascript:void(0);" id="id_truebtn"><?php //esc_html_e("Yes Delete It", "jobhunt"); ?></a>
+                                                                    <a href="javascript:void(0);" id="id_falsebtn"><?php //esc_html_e("Cancel", "jobhunt"); ?></a>
                                                                 </div>
-                                                            </div>
+                                                            </div>-->
                                                             <!-- end warning popup -->
                                                             <div class="main-cs-loader"></div>
                                                             <?php if ( ! $plugon_active ) { ?>
@@ -176,7 +176,7 @@ update_option('wooC_current_page', cs_server_protocol() . $_SERVER['HTTP_HOST'] 
                                                                             );
                                                                             $cs_form_fields2->cs_form_text_render($cs_opt_array);
                                                                             ?></label>				
-                                                                            <?php
+                                                                        <?php
                                                                     }
                                                                     ?>
                                                                 </div>
@@ -236,9 +236,9 @@ update_option('wooC_current_page', cs_server_protocol() . $_SERVER['HTTP_HOST'] 
                                                             $profile_tab = isset($_REQUEST['profile_tab']) ? $_REQUEST['profile_tab'] : '';
                                                             do_action('jobhunt_candidate_dashboard_tabs', $profile_tab, $uid);
                                                             ?>
-							   <div class="tab-pane <?php if ((isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'packages') || (isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'packages')) echo 'active'; ?> fade1 tabs-container" id="packages">
+                                                            <div class="tab-pane <?php if ( (isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'packages') || (isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'packages') ) echo 'active'; ?> fade1 tabs-container" id="packages">
                                                                 <div class="cs-loader"></div>
-                                                                <?php if ((isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'packages') || (isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'packages')) { ?>
+                                                                <?php if ( (isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'packages') || (isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'packages') ) { ?>
                                                                     <script>
                                                                         jQuery(window).load(function () {
                                                                             cs_ajax_candidate_membership_packages(pkg_array);
@@ -248,7 +248,7 @@ update_option('wooC_current_page', cs_server_protocol() . $_SERVER['HTTP_HOST'] 
                                                                 }
                                                                 ?>
                                                             </div>
-							    
+
                                                             <div class="tab-pane <?php if ( isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'change_password' ) echo 'active'; ?> fade1 tabs-container" id="change_password">
                                                                 <?php if ( isset($_REQUEST['profile_tab']) && $_REQUEST['profile_tab'] == 'change_password' ) { ?>
                                                                     <script>
@@ -280,8 +280,8 @@ update_option('wooC_current_page', cs_server_protocol() . $_SERVER['HTTP_HOST'] 
                                             <div class="col-md-12">
                                                 <div class="unauthorized">
                                                     <h1><?php
-                _e('Please register yourself as a <span>candidate</span> to access this page.', 'jobhunt');
-                        ?>
+                                                        _e('Please register yourself as a <span>candidate</span> to access this page.', 'jobhunt');
+                                                        ?>
                                                     </h1>
                                                 </div>
                                             </div>

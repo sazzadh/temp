@@ -153,6 +153,9 @@ if ( ! function_exists('cs_profile_menu') ) {
                     ?>
                     <a href="<?php echo esc_url($cs_href); ?>"><i class="icon-user9"></i><?php esc_html_e('View Profile', 'jobhunt'); ?></a>
                 </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="cs_remove_profile('<?php echo esc_js(admin_url('admin-ajax.php')); ?>', '<?php echo absint($uid) ?>', 'cand')"><i class="icon-trash"></i><?php esc_html_e('Delete Profile', 'jobhunt'); ?></a>
+                </li>
                 <li><?php cs_user_logout(); ?></li>
 
             </ul>
@@ -323,6 +326,9 @@ if ( ! function_exists('cs_profiletop_menu') ) {
                                         <li>
                                             <a href="<?php echo esc_url($cs_href); ?>" ><i class="icon-user9"></i><?php esc_html_e('View Profile', 'jobhunt'); ?></a>
                                         </li>
+                                        <li>
+                                            <a href="javascript:void(0)" onclick="cs_remove_profile('<?php echo esc_js(admin_url('admin-ajax.php')); ?>', '<?php echo absint($uid) ?>', 'cand')"><i class="icon-trash"></i><?php esc_html_e('Delete Profile', 'jobhunt'); ?></a>
+                                        </li>
 
                                     </ul>
                                     <?php
@@ -391,6 +397,9 @@ if ( ! function_exists('cs_profiletop_menu') ) {
                                         ?>
                                         <li>
                                             <a href="<?php echo esc_url($cs_href); ?>"><i class="icon-newspaper4"></i> <?php esc_html_e('View Profile', 'jobhunt'); ?></a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" onclick="cs_remove_profile('<?php echo esc_js(admin_url('admin-ajax.php')); ?>', '<?php echo absint($uid) ?>', 'emp')"><i class="icon-trash"></i><?php esc_html_e('Delete Profile', 'jobhunt'); ?></a>
                                         </li>
                                         <?php do_action('cs_manage_employee_nav_link', $cs_page_id, $uid, $data_toogle) ?>
                                     </ul>
@@ -798,10 +807,10 @@ if ( ! function_exists('cs_add_education_to_list_fe') ) {
 
         $date_separator = '';
         if ( $cs_edu_from_date != '' ) {
-            $cs_edu_from_date = date('Y', strtotime($cs_edu_from_date));
+            $cs_edu_from_date_top = date('Y', strtotime($cs_edu_from_date));
         }
         if ( $cs_edu_to_date != '' ) {
-            $cs_edu_to_date = date('Y', strtotime($cs_edu_to_date));
+            $cs_edu_to_date_top = date('Y', strtotime($cs_edu_to_date));
         }
         if ( $cs_edu_from_date !== '' && $cs_edu_from_date != '' ) {
             $date_separator = ' - ';
@@ -812,7 +821,7 @@ if ( ! function_exists('cs_add_education_to_list_fe') ) {
                 <div class="title" id="subject-title' . esc_attr($extra_feature_id) . '">
                     <span>' . esc_attr($cs_edu_title) . '</span>
                 </div>
-                <div class="date"><span>' . $cs_edu_from_date . $date_separator . $cs_edu_to_date . '</span></div>
+                <div class="date"><span>' . $cs_edu_from_date_top . $date_separator . $cs_edu_to_date_top . '</span></div>
                 <div class="location"><span>' . $cs_edu_institute . '</span></div>
                 <div class="option">
                         <a data-toggle="tooltip" data-placement="top" title="' . esc_html__("Edit", "jobhunt") . '" href="javascript:cs_createpop(\'edit_track_form' . esc_js($extra_feature_id) . '\',\'filter\')" class="actions edit">
@@ -1174,10 +1183,10 @@ if ( ! function_exists('cs_add_experience_to_list_fe') ) {
 
         $date_separator = '';
         if ( $cs_exp_from_date != '' ) {
-            $cs_exp_from_date = date('Y', strtotime($cs_exp_from_date));
+            $cs_exp_from_date_top = date('Y', strtotime($cs_exp_from_date));
         }
         if ( $cs_exp_to_date != '' ) {
-            $cs_exp_to_date = date('Y', strtotime($cs_exp_to_date));
+            $cs_exp_to_date_top = date('Y', strtotime($cs_exp_to_date));
         }
         if ( $cs_exp_from_date !== '' && $cs_exp_to_date != '' ) {
             $date_separator = ' - ';
@@ -1188,7 +1197,7 @@ if ( ! function_exists('cs_add_experience_to_list_fe') ) {
                     <div class="title" id="subject-title' . esc_attr($extra_feature_id) . '">
                             <span>' . $cs_exp_title . ' @ ' . $cs_exp_company . '</span>
                     </div>
-                    <div class="date"><span>' . $cs_exp_from_date . $date_separator . $cs_exp_to_date . '</span></div>
+                    <div class="date"><span>' . $cs_exp_from_date_top . $date_separator . $cs_exp_to_date_top . '</span></div>
                     <div class="option">
                         <a data-toggle="tooltip" data-placement="top" title="' . esc_html__("Edit", "jobhunt") . '" href="javascript:cs_createpop(\'edit_track_form' . esc_js($extra_feature_id) . '\',\'filter\')" class="actions edit">
                             <i class="icon-gear"></i>
@@ -1917,7 +1926,8 @@ if ( ! function_exists('cs_portfolio_list_fe') ) {
                 <div class="alert alert-dismissible user-img"> 
                     <div class="page-wrap" id="cs_candidate_portolfio_box">
                         <figure>
-                            '; {
+                            ';
+        {
             $html .= '<img src="' . esc_url($cs_jobhunt->plugin_url()) . 'assets/images/upload-img.jpg" id="cs_candidate_portolfio_img" width="100" alt="" />';
         }
         $html .= '</figure>
@@ -2211,15 +2221,14 @@ if ( ! function_exists('cs_add_portfolio_to_list_fe') ) {
 if ( ! function_exists('ajax_form_save') ) {
 
     function ajax_form_save() {
-        global $post, $current_user, $reset_date, $cs_options;
+        global $post, $current_user, $reset_date, $cs_options, $cs_plugin_options;
+
+        $cs_plugin_options['cs_demo_user_login_switch'];
+        $cs_plugin_options['cs_demo_user_modification_allowed_switch'];
+
         if ( isset($_POST['cs_user']) && $_POST['cs_user'] <> '' ) {
             $user_id = $_POST['cs_user'];
-            // check demo user check
             $get_demouser_info = get_user_by('id', $user_id);
-            // if ( isset($get_demouser_info->user_login) && $get_demouser_info->user_login == 'jobcareer-candidate' ) {
-            // echo esc_html__("You don't have access to update in demo mode.", "jobhunt");
-            //die();
-            // }
             if ( ! current_user_can('edit_user', $user_id) ) {
                 return false;
             }
@@ -3210,3 +3219,27 @@ if ( ! function_exists('cs_candidate_skills_calculation') ) {
     }
 
 }
+
+
+if ( ! function_exists('cs_remove_profile_callback') ) {
+
+    function cs_remove_profile_callback() {
+        $u_id = isset($_POST['u_id']) ? $_POST['u_id'] : '';
+        if ( isset($u_id) && ! empty($u_id) ) {
+            wp_delete_user($u_id);
+            $reponse['status'] = 'success';
+            $reponse['message'] = esc_html__('Delete Successfully', 'jobhunt');
+            $reponse['redirecturl'] = home_url();
+            echo json_encode($reponse);
+            wp_die();
+        }
+        $reponse['status'] = 'error';
+        $reponse['message'] = esc_html__('Something went wrong', 'jobhunt');
+        echo json_encode($reponse);
+        wp_die();
+    }
+
+    add_action("wp_ajax_cs_remove_profile", "cs_remove_profile_callback");
+    add_action("wp_ajax_nopriv_cs_remove_profile", "cs_remove_profile_callback");
+}
+

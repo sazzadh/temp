@@ -6,7 +6,6 @@
 if ( ! function_exists('jobcareer_pb_register') ) {
 
     function jobcareer_pb_register($die = 0) {
-
         global $cs_form_fields2, $cs_html_fields;
         $shortcode_element = '';
         $filter_element = 'filterdrag';
@@ -363,18 +362,7 @@ if ( ! function_exists('cs_social_login_form') ) {
                             </ul> 
                         </div>
                     </div>
-
-                    <?php
-                    $cs_without_login_switch = isset($cs_plugin_options['cs_without_login_switch']) && ! empty($cs_plugin_options['cs_without_login_switch']) ? $cs_plugin_options['cs_without_login_switch'] : '';
-
-                    if ( ! is_user_logged_in() && $cs_without_login_switch == 'on' ) {
-                        ?>
-                        <div class="apply-without-login">
-                        </div>
-                        <?php
-                    }
-                    ?>
-                    <?php } ?>
+                <?php } ?>
 
                 <?php
             endif;
@@ -668,58 +656,58 @@ if ( ! function_exists('cs_lost_pass') ) {
                     <div class="filed-border">
                         <div class="input-holder">
                             <i class="icon-envelope4"></i>
-            <?php
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => '',
-                'cust_id' => "user_input",
-                'cust_name' => "user_input",
-                'classes' => 'form-control user-name',
-                'extra_atr' => 'placeholder="' . esc_html__('Enter Username / Email Address...', 'jobhunt') . '"',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                            <?php
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => '',
+                                'cust_id' => "user_input",
+                                'cust_name' => "user_input",
+                                'classes' => 'form-control user-name',
+                                'extra_atr' => 'placeholder="' . esc_html__('Enter Username / Email Address...', 'jobhunt') . '"',
+                            );
+                            $cs_form_fields2->cs_form_text_render($cs_opt_array);
 
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => 'popup',
-                'cust_id' => "",
-                'cust_name' => "type",
-                'classes' => 'form-control',
-            );
-            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => 'popup',
+                                'cust_id' => "",
+                                'cust_name' => "type",
+                                'classes' => 'form-control',
+                            );
+                            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
 
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => get_the_ID(),
-                'cust_id' => "",
-                'cust_name' => "current_page_id",
-                'classes' => 'form-control',
-            );
-            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => get_the_ID(),
+                                'cust_id' => "",
+                                'cust_name' => "current_page_id",
+                                'classes' => 'form-control',
+                            );
+                            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
 
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => home_url(),
-                'cust_id' => "",
-                'cust_name' => "home_url",
-                'classes' => '',
-            );
-            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
-            ?>
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => home_url(),
+                                'cust_id' => "",
+                                'cust_name' => "home_url",
+                                'classes' => '',
+                            );
+                            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+                            ?>
                         </div>
                     </div>
                     <label>
-            <?php
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => esc_html__('Send Email', 'jobhunt'),
-                'cust_id' => "",
-                'cust_name' => "submit",
-                'classes' => 'reset_password cs-bgcolor',
-                'cust_type' => 'submit',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-            ?>
+                        <?php
+                        $cs_opt_array = array(
+                            'id' => '',
+                            'std' => esc_html__('Send Email', 'jobhunt'),
+                            'cust_id' => "",
+                            'cust_name' => "submit",
+                            'classes' => 'reset_password cs-bgcolor',
+                            'cust_type' => 'submit',
+                        );
+                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                        ?>
                     </label>
                     <a class="cs-bgcolor cs-login-switch"><?php esc_html_e('Login Here', 'jobhunt') ?></a>
                 </form>
@@ -727,54 +715,54 @@ if ( ! function_exists('cs_lost_pass') ) {
                     <div class="filed-border">
                         <div class="input-holder">
                             <i class="icon-lock2"></i>
-            <?php
-            $cs_opt_array = array(
-                'std' => '',
-                'cust_id' => "new_pass",
-                'cust_name' => "new_pass",
-                'classes' => 'form-control new-pass',
-                'cust_type' => 'password',
-                'extra_atr' => 'placeholder="' . esc_html__('Enter new password', 'jobhunt') . '"',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-            ?>
+                            <?php
+                            $cs_opt_array = array(
+                                'std' => '',
+                                'cust_id' => "new_pass",
+                                'cust_name' => "new_pass",
+                                'classes' => 'form-control new-pass',
+                                'cust_type' => 'password',
+                                'extra_atr' => 'placeholder="' . esc_html__('Enter new password', 'jobhunt') . '"',
+                            );
+                            $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                            ?>
                         </div>
                         <div class="input-holder">
                             <i class="icon-lock2"></i>
-            <?php
-            $cs_opt_array = array(
-                'std' => '',
-                'cust_id' => "confirm_new_pass",
-                'cust_name' => "confirm_new_pass",
-                'classes' => 'form-control confirm-new-pass',
-                'cust_type' => 'password',
-                'extra_atr' => 'placeholder="' . esc_html__('Confirm new password', 'jobhunt') . '"',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                            <?php
+                            $cs_opt_array = array(
+                                'std' => '',
+                                'cust_id' => "confirm_new_pass",
+                                'cust_name' => "confirm_new_pass",
+                                'classes' => 'form-control confirm-new-pass',
+                                'cust_type' => 'password',
+                                'extra_atr' => 'placeholder="' . esc_html__('Confirm new password', 'jobhunt') . '"',
+                            );
+                            $cs_form_fields2->cs_form_text_render($cs_opt_array);
 
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => (isset($_GET['login']) && $_GET['login'] != '') ? $_GET['login'] : '',
-                'cust_id' => "",
-                'cust_name' => "user_login",
-                'classes' => 'form-control',
-            );
-            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
-            ?>
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => (isset($_GET['login']) && $_GET['login'] != '') ? $_GET['login'] : '',
+                                'cust_id' => "",
+                                'cust_name' => "user_login",
+                                'classes' => 'form-control',
+                            );
+                            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+                            ?>
                         </div>
                     </div>
                     <label>
-            <?php
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => esc_html__('Send Email', 'jobhunt'),
-                'cust_id' => "",
-                'cust_name' => "submit",
-                'classes' => 'reset_password cs-bgcolor',
-                'cust_type' => 'submit',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-            ?>
+                        <?php
+                        $cs_opt_array = array(
+                            'id' => '',
+                            'std' => esc_html__('Send Email', 'jobhunt'),
+                            'cust_id' => "",
+                            'cust_name' => "submit",
+                            'classes' => 'reset_password cs-bgcolor',
+                            'cust_type' => 'submit',
+                        );
+                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                        ?>
                     </label>
                     <a class="cs-bgcolor cs-login-switch"><?php esc_html_e('Login Here', 'jobhunt') ?></a>
                 </form>
@@ -790,59 +778,62 @@ if ( ! function_exists('cs_lost_pass') ) {
                 <div class="row">
                     <div class="col-md-12">
                         <label><?php esc_html_e('Enter Username/Email Address', 'jobhunt') ?></label>
-            <?php
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => '',
-                'cust_id' => "user_input",
-                'cust_name' => "user_input",
-                'classes' => 'form-control user-name',
-                'extra_atr' => 'placeholder="' . esc_html__('Enter Username or Email Address...', 'jobhunt') . '"',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                        <div class="field-holder">
+                            <i class="icon-envelope4"></i>
+                            <?php
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => '',
+                                'cust_id' => "user_input",
+                                'cust_name' => "user_input",
+                                'classes' => 'form-control user-name',
+                                'extra_atr' => 'placeholder="' . esc_html__('Enter Username or Email Address...', 'jobhunt') . '"',
+                            );
+                            $cs_form_fields2->cs_form_text_render($cs_opt_array);
 
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => 'page',
-                'cust_id' => "",
-                'cust_name' => "type",
-                'classes' => 'form-control',
-            );
-            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => 'page',
+                                'cust_id' => "",
+                                'cust_name' => "type",
+                                'classes' => 'form-control',
+                            );
+                            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
 
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => get_the_ID(),
-                'cust_id' => "",
-                'cust_name' => "current_page_id",
-                'classes' => 'form-control',
-            );
-            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => get_the_ID(),
+                                'cust_id' => "",
+                                'cust_name' => "current_page_id",
+                                'classes' => 'form-control',
+                            );
+                            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
 
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => home_url(),
-                'cust_id' => "",
-                'cust_name' => "home_url",
-                'classes' => '',
-            );
-            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
-            ?>
+                            $cs_opt_array = array(
+                                'id' => '',
+                                'std' => home_url(),
+                                'cust_id' => "",
+                                'cust_name' => "home_url",
+                                'classes' => '',
+                            );
+                            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+                            ?>
+                        </div>
                     </div>
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-5">
-            <?php
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => esc_html__('Send Email', 'jobhunt'),
-                'cust_id' => "",
-                'cust_name' => "submit",
-                'classes' => 'reset_password user-submit backcolr cs-bgcolor acc-submit',
-                'cust_type' => 'submit',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-            ?>
+                                <?php
+                                $cs_opt_array = array(
+                                    'id' => '',
+                                    'std' => esc_html__('Send Email', 'jobhunt'),
+                                    'cust_id' => "",
+                                    'cust_name' => "submit",
+                                    'classes' => 'reset_password user-submit backcolr cs-bgcolor acc-submit',
+                                    'cust_type' => 'submit',
+                                );
+                                $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                ?>
                             </div>
                             <div class="col-md-7 login-section">
                                 <a class="login-link-page" href="#"><?php esc_html_e('Login Here', 'jobhunt') ?></a>
@@ -855,55 +846,55 @@ if ( ! function_exists('cs_lost_pass') ) {
                 <div class="row">
                     <div class="col-md-12">
                         <label><?php esc_html_e('Enter New Password', 'jobhunt') ?></label>
-            <?php
-            $cs_opt_array = array(
-                'std' => '',
-                'cust_id' => "new_pass",
-                'cust_name' => "new_pass",
-                'classes' => 'form-control new-pass',
-                'cust_type' => 'password',
-                'extra_atr' => 'placeholder="' . esc_html__('Enter new password', 'jobhunt') . '"',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-            ?>
+                        <?php
+                        $cs_opt_array = array(
+                            'std' => '',
+                            'cust_id' => "new_pass",
+                            'cust_name' => "new_pass",
+                            'classes' => 'form-control new-pass',
+                            'cust_type' => 'password',
+                            'extra_atr' => 'placeholder="' . esc_html__('Enter new password', 'jobhunt') . '"',
+                        );
+                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                        ?>
                     </div>
                     <div class="col-md-12">
                         <label><?php esc_html_e('Confirm New Password', 'jobhunt') ?></label>
-            <?php
-            $cs_opt_array = array(
-                'std' => '',
-                'cust_id' => "confirm_new_pass",
-                'cust_name' => "confirm_new_pass",
-                'classes' => 'form-control confirm-new-pass',
-                'cust_type' => 'password',
-                'extra_atr' => 'placeholder="' . esc_html__('Confirm new password', 'jobhunt') . '"',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                        <?php
+                        $cs_opt_array = array(
+                            'std' => '',
+                            'cust_id' => "confirm_new_pass",
+                            'cust_name' => "confirm_new_pass",
+                            'classes' => 'form-control confirm-new-pass',
+                            'cust_type' => 'password',
+                            'extra_atr' => 'placeholder="' . esc_html__('Confirm new password', 'jobhunt') . '"',
+                        );
+                        $cs_form_fields2->cs_form_text_render($cs_opt_array);
 
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => (isset($_GET['login']) && $_GET['login'] != '') ? $_GET['login'] : '',
-                'cust_id' => "",
-                'cust_name' => "user_login",
-                'classes' => 'form-control',
-            );
-            $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
-            ?>
+                        $cs_opt_array = array(
+                            'id' => '',
+                            'std' => (isset($_GET['login']) && $_GET['login'] != '') ? $_GET['login'] : '',
+                            'cust_id' => "",
+                            'cust_name' => "user_login",
+                            'classes' => 'form-control',
+                        );
+                        $cs_form_fields2->cs_form_hidden_render($cs_opt_array);
+                        ?>
                     </div>
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-5">
-            <?php
-            $cs_opt_array = array(
-                'id' => '',
-                'std' => esc_html__('Send Email', 'jobhunt'),
-                'cust_id' => "",
-                'cust_name' => "submit",
-                'classes' => 'reset_password user-submit backcolr cs-bgcolor acc-submit',
-                'cust_type' => 'submit',
-            );
-            $cs_form_fields2->cs_form_text_render($cs_opt_array);
-            ?>
+                                <?php
+                                $cs_opt_array = array(
+                                    'id' => '',
+                                    'std' => esc_html__('Send Email', 'jobhunt'),
+                                    'cust_id' => "",
+                                    'cust_name' => "submit",
+                                    'classes' => 'reset_password user-submit backcolr cs-bgcolor acc-submit',
+                                    'cust_type' => 'submit',
+                                );
+                                $cs_form_fields2->cs_form_text_render($cs_opt_array);
+                                ?>
                             </div>
                             <div class="col-md-7 login-section">
                                 <a class="login-link-page" href="#"><?php esc_html_e('Login Here', 'jobhunt') ?></a>
@@ -917,38 +908,38 @@ if ( ! function_exists('cs_lost_pass') ) {
         ?>
         <script type="text/javascript">
             var $ = jQuery;
-            $("#wp_pass_reset_<?php echo absint($cs_rand) ?>").submit(function () {
-                $('#cs-result-<?php echo absint($cs_rand) ?>').html('<i class="icon-spinner8 icon-spin"></i>').fadeIn();
+            jQuery("#wp_pass_reset_<?php echo absint($cs_rand) ?>").submit(function () {
+                jQuery('#cs-result-<?php echo absint($cs_rand) ?>').html('<i class="icon-spinner8 icon-spin"></i>').fadeIn();
                 var input_data = $('#wp_pass_reset_<?php echo absint($cs_rand) ?>').serialize() + '&action=cs_get_new_pass';
-                $.ajax({
+                jQuery.ajax({
                     type: "POST",
                     url: "<?php echo esc_url(admin_url('admin-ajax.php')) ?>",
                     data: input_data,
                     success: function (msg) {
-                        $('#cs-result-<?php echo absint($cs_rand) ?>').html(msg);
+                        jQuery('#cs-result-<?php echo absint($cs_rand) ?>').html(msg);
                     }
                 });
                 return false;
             });
-            $("#wp_pass_lost_<?php echo absint($cs_rand) ?>").submit(function () {
-                $('#cs-result-<?php echo absint($cs_rand) ?>').html('<i class="icon-spinner8 icon-spin"></i>').fadeIn();
+            jQuery("#wp_pass_lost_<?php echo absint($cs_rand) ?>").submit(function () {
+                jQuery('#cs-result-<?php echo absint($cs_rand) ?>').html('<i class="icon-spinner8 icon-spin"></i>').fadeIn();
                 var input_data = $('#wp_pass_lost_<?php echo absint($cs_rand) ?>').serialize() + '&action=cs_reset_pass';
-                $.ajax({
+                jQuery.ajax({
                     type: "POST",
                     url: "<?php echo esc_url(admin_url('admin-ajax.php')) ?>",
                     data: input_data,
                     success: function (msg) {
-                        $('#cs-result-<?php echo absint($cs_rand) ?>').html(msg);
+                        jQuery('#cs-result-<?php echo absint($cs_rand) ?>').html(msg);
                     }
                 });
                 return false;
             });
-            $(document).on('click', '.cs-forgot-switch', function () {
-                $('.cs-login-pbox').hide();
+            jQuery(document).on('click', '.cs-forgot-switch', function () {
+                jQuery('.cs-login-pbox').hide();
                 jQuery('.user-name').val('');
                 jQuery('.new-pass').val('');
                 jQuery('.confirm-new-pass').val('');
-                $('.cs-forgot-pbox').show();
+                jQuery('.cs-forgot-pbox').show();
                 jQuery('#without-login-switch').hide();
             });
             jQuery('.user-forgot-password-page').on('click', function (e) {
@@ -956,7 +947,7 @@ if ( ! function_exists('cs_lost_pass') ) {
                 jQuery('.new-pass').val('');
                 jQuery('.confirm-new-pass').val('');
             });
-            $(document).on('click', '.cs-login-switch', function () {
+            jQuery(document).on('click', '.cs-login-switch', function () {
                 jQuery('.cs-forgot-pbox').hide();
                 jQuery('.cs-login-pbox').show();
                 jQuery('#without-login-switch').hide();
@@ -972,8 +963,8 @@ if ( ! function_exists('cs_lost_pass') ) {
             ob_start();
             ?>
             <script type="text/javascript">
-                $(window).load(function () {
-                    $(".user-forgot-password-page").click();
+                jQuery(window).load(function () {
+                    jQuery(".user-forgot-password-page").click();
                     jQuery('.user-name').val('');
                     jQuery('.new-pass').val('');
                     jQuery('.confirm-new-pass').val('');
@@ -985,13 +976,18 @@ if ( ! function_exists('cs_lost_pass') ) {
             ob_start();
             ?>
             <script type="text/javascript">
-                (function ($) {
-                    $(function () {
-                        $(".cs-login-switch").click();
-                        $(".cs-forgot-switch").click();
+                (function (jQuery) {
+                    jQuery(function () {
+                        jQuery(".cs-login-switch").click();
+                        jQuery(".cs-forgot-switch").click();
                         jQuery('.user-name').val('');
                         jQuery('.new-pass').val('');
                         jQuery('.confirm-new-pass').val('');
+                        jQuery('#sign-in').addClass('in');
+                        jQuery('#sign-in').show();
+
+
+
                     });
                 })(jQuery);
             </script>

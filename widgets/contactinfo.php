@@ -72,7 +72,11 @@ if ( ! class_exists('contactinfo') ) {
                     'classes' => '',
                     'cust_id' => CS_FUNCTIONS()->cs_special_chars($this->get_field_id('contact_view')),
                     'cust_name' => CS_FUNCTIONS()->cs_special_chars($this->get_field_name('contact_view')),
-                    'options' => array( 'view-1' => esc_html__('View 1', 'jobhunt'), 'view-2' => esc_html__('View 2', 'jobhunt') ),
+                    'options' => array(
+                        'view-1' => esc_html__('View 1', 'jobhunt'),
+                        'view-2' => esc_html__('View 2', 'jobhunt'),
+                        'view-3' => esc_html__('View 3', 'jobhunt'),
+                    ),
                     'return' => true,
                     'required' => false
                 ),
@@ -385,6 +389,52 @@ if ( ! class_exists('contactinfo') ) {
                             </ul>
                             <?php
                         }
+                    } elseif ( $contact_view == 'view-3' ) {
+                        if ( isset($image_url) && $image_url != '' ) {
+                            ?>
+                            <div class="logo">
+                                <img src="<?php echo esc_url($image_url); ?>" alt="">
+                            </div>
+                        <?php } ?>
+                        <address>
+                            <span><?php esc_html_e('Address : ', 'jobhunt');echo ($title); ?></span>
+                            <span><?php echo esc_html__('Telephone : ', 'jobhunt') . esc_attr($telephone); ?></span>
+                            <span>
+                                <?php
+                                echo esc_html__('E-mail : ', 'jobhunt');
+                                echo '<a href="mailto:'.esc_attr($email).'">' . esc_attr($email) . '</a>';
+                                ?>
+                            </span>
+
+                            <?php
+                            if ( $office_hours != '' ) {
+                                ?>
+                                <span>
+                                    <?php
+                                    esc_html_e('office hours : ', 'jobhunt');
+                                    echo esc_html($office_hours);
+                                    ?>
+                                </span>
+                                <?php
+                            }
+                            ?>
+                        </address>
+                        <ul class="social-media">
+                            <?php if ( $fb_url <> '' ) { ?>
+                                <li><a href="<?php echo esc_url($fb_url); ?>" data-original-title="<?php esc_html_e('facebook', 'jobhunt'); ?>"><i class="icon-facebook7"></i></a></li>
+                            <?php } if ( $tw_url <> '' ) { ?>
+                                <li><a href="<?php echo esc_url($tw_url); ?>" data-original-title="<?php esc_html_e('twitter', 'jobhunt'); ?>"><i class=" icon-twitter6"></i></a></li>
+                            <?php } if ( $lk_url <> '' ) { ?>
+                                <li><a href="<?php echo esc_url($lk_url); ?>" data-original-title="<?php esc_html_e('linkedin', 'jobhunt'); ?>"><i class="icon-linkedin2"></i></a></li>
+                            <?php } if ( $gl_url <> '' ) { ?>
+                                <li><a href="<?php echo esc_url($gl_url); ?>" data-original-title="<?php esc_html_e('google', 'jobhunt'); ?>"><i class="icon-google"></i></a></li>
+                            <?php } if ( $ig_url <> '' ) { ?>
+                                <li><a href="<?php echo esc_url($ig_url); ?>" data-original-title="<?php esc_html_e('instagram', 'jobhunt'); ?>"><i class="icon-instagram"></i></a></li>
+                            <?php } if ( $yt_url <> '' ) { ?>
+                                <li><a href="<?php echo esc_url($yt_url); ?>" data-original-title="<?php esc_html_e('youtube', 'jobhunt'); ?>"><i class="icon-youtube"></i></a></li>
+                            <?php } ?>
+                        </ul>
+                        <?php
                     } else {
                         if ( isset($image_url) && $image_url != '' ) {
                             ?>
@@ -392,6 +442,7 @@ if ( ! class_exists('contactinfo') ) {
                                 <img src="<?php echo esc_url($image_url); ?>" alt="">
                             </div>
                         <?php } ?>
+
                         <address>
                             <span> 
                                 <?php

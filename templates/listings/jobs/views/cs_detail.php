@@ -183,7 +183,7 @@ $count_post = $found_posts;
                                                                         $finded_array = array_search($datavalue, $options);
                                                                         $datavalue = isset($finded_array) ? $cus_field['options']['label'][$finded_array] : '';
                                                                     }
-                                                                    echo $comma . esc_html($datavalue);
+                                                                    $comma = esc_html($datavalue);
                                                                     $comma = ', ';
                                                                 } else {
                                                                     echo esc_html($datavalue);

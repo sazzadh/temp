@@ -11,12 +11,13 @@ if ( ! function_exists('cs_employer_listing') ) {
             $_GET[$key] = $val;
         }
         ob_start();
-        
+
         global $wpdb, $cs_plugin_options, $cs_form_fields2;
+        $cs_allow_in_search_user_switch = isset($cs_plugin_options['cs_allow_in_search_user_switch']) ? $cs_plugin_options['cs_allow_in_search_user_switch'] : '';
         $a = shortcode_atts(
                 array(
             'column_size' => '',
-            'cs_employer_all_companies'=> '#',        
+            'cs_employer_all_companies' => '#',
             'cs_employer_show_pagination' => 'pagination', // yes or no
             'cs_employer_pagination' => '10', // as per your requirement only numbers(0-9)
             'cs_employer_searchbox' => 'yes', // yes or no
@@ -95,9 +96,25 @@ if ( ! function_exists('cs_employer_listing') ) {
                 );
             }
         }
-        
+
         $cus_fields_count_arr = array();
         $location_condition_arr = array();
+        $user_allow_in_search_query = array();
+        if ( isset($cs_allow_in_search_user_switch) && $cs_allow_in_search_user_switch == 'on' ) {
+            $user_allow_in_search_query = array(
+                'relation' => 'OR',
+                array(
+                    'key' => 'cs_allow_search',
+                    'value' => 'yes',
+                    'compare' => '=',
+                ),
+                array(
+                    'key' => 'cs_allow_search',
+                    'value' => '',
+                    'compare' => '=',
+                ),
+            );
+        }
         // location check
         if ( $location != '' ) {
             $cs_radius_switch = isset($cs_plugin_options['cs_radius_switch']) ? $cs_plugin_options['cs_radius_switch'] : '';
@@ -289,7 +306,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                 );
             }
         }
-        
+
         // end specialism check
         // load all custom fileds for filtration 
         $cs_employer_cus_fields = get_option("cs_employer_cus_fields");
@@ -414,13 +431,13 @@ if ( ! function_exists('cs_employer_listing') ) {
                 }
             }
         }
-        
-        
+
+
         // end load all custom fileds for filtration
         $meta_post_ids_arr = array();
         $company_name_id_condition = '';
-        if ( isset($filter_arr) && ! empty($filter_arr) ) { 
-            $meta_post_ids_arr = cs_get_query_whereclase_by_array($filter_arr, true); 
+        if ( isset($filter_arr) && ! empty($filter_arr) ) {
+            $meta_post_ids_arr = cs_get_query_whereclase_by_array($filter_arr, true);
             // if no result found in filtration 
             if ( empty($meta_post_ids_arr) ) {
                 $meta_post_ids_arr = array( 0 );
@@ -452,10 +469,10 @@ if ( ! function_exists('cs_employer_listing') ) {
                             'value' => strtotime(current_time($cs_employer_activity_date_formate)),
                             'compare' => '<=',
                         ),
+                        $user_allow_in_search_query,
                         $location_condition_arr,
                     )
                 );
-                
             }
         } else {
             $post_ids = $wpdb->get_col("SELECT ID FROM $wpdb->users WHERE " . $company_name_id_condition . " 1=1 " . $alphabatic_qrystr);
@@ -474,6 +491,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                             'value' => strtotime(current_time($cs_employer_activity_date_formate)),
                             'compare' => '<=',
                         ),
+                        $user_allow_in_search_query,
                         $location_condition_arr,
                     )
                 );
@@ -516,7 +534,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                 if ( $post_ids ) {
                     $args = array( 'number' => $users_per_page, 'role' => 'cs_employer', 'offset' => $offset, 'order' => 'ASC', 'orderby' => 'display_name',
                         'include' => $post_ids,
-                        'fields' => 'ID',
+                        'fields' => array( 'ID', 'display_name' ),
                         'meta_query' => array(
                             array(
                                 'key' => 'cs_user_status',
@@ -528,6 +546,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                                 'value' => strtotime(current_time($cs_employer_activity_date_formate)),
                                 'compare' => '<=',
                             ),
+                            $user_allow_in_search_query,
                             $location_condition_arr,
                         )
                     );
@@ -537,7 +556,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                 if ( $post_ids ) {
                     $args = array( 'number' => $users_per_page, 'role' => 'cs_employer', 'offset' => $offset, 'order' => 'ASC', 'orderby' => 'display_name',
                         'include' => $post_ids,
-                        'fields' => array('ID','display_name' ),
+                        'fields' => array( 'ID', 'display_name' ),
                         'meta_query' => array(
                             array(
                                 'key' => 'cs_user_status',
@@ -549,6 +568,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                                 'value' => strtotime(current_time($cs_employer_activity_date_formate)),
                                 'compare' => '<=',
                             ),
+                            $user_allow_in_search_query,
                             $location_condition_arr,
                         )
                     );
@@ -609,7 +629,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                                             // get all job types
                                             $specialisms_parent_id = 0;
                                             $input_type_specialism = 'radio';   // if first level then select only sigle specialism
-                                            if ( !empty($specialisms)) {
+                                            if ( ! empty($specialisms) ) {
                                                 $selected_spec = get_term_by('slug', $specialisms[0], 'specialisms');
                                                 $specialisms_parent_id = $selected_spec->term_id;
                                             }
@@ -676,6 +696,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                                                                         'value' => strtotime(current_time($cs_employer_activity_date_formate)),
                                                                         'compare' => '<=',
                                                                     ),
+                                                                    $user_allow_in_search_query,
                                                                     $location_condition_arr,
                                                                 )
                                                             );
@@ -702,6 +723,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                                                                         'value' => strtotime(current_time($cs_employer_activity_date_formate)),
                                                                         'compare' => '<=',
                                                                     ),
+                                                                    $user_allow_in_search_query,
                                                                     $location_condition_arr,
                                                                 )
                                                             );
@@ -774,7 +796,7 @@ if ( ! function_exists('cs_employer_listing') ) {
                                                                     'cust_id' => "checklistcomplete" . $random_ids,
                                                                     'cust_name' => 'specialisms',
                                                                     'return' => true,
-                                                                    'extra_atr' => 'onchange="javascript:frm_all_specialisms.submit();" ',
+                                                                    'extra_atr' => 'onchange="javascript:frm_all_specialisms' . $random_id . '.submit();" ',
                                                                 );
                                                                 echo '<li class="' . $input_type_specialism . '">' . $cs_form_fields2->cs_form_text_render($cs_opt_array) . ''
                                                                 . '<label for="checklistcomplete' . $random_ids . '">' . $specialismsitem->name . '<span>(' . $specialisms_count_post . ')</span></label></li>';
@@ -807,17 +829,16 @@ if ( ! function_exists('cs_employer_listing') ) {
                 <div id="fade" class="black_overlay"></div>
                 <?php
             }
+
             $main_col = '';
             if ( $a['cs_employer_searchbox'] == 'yes' ) {
                 echo '<div class="row">';
                 echo '<div class="cs-content-holder">';
                 include('employer-searchbox.php');
             }
-            
-       
             if ( $a['cs_employer_searchbox'] == 'yes' ) {
                 $main_col = 'col-lg-9 col-md-9 col-sm-12 col-xs-12';
-            } 
+            }
 //             employer views
             if ( $a['cs_employer_view'] == 'simple' ) {
                 include( 'views/cs_simple.php' );
@@ -831,10 +852,10 @@ if ( ! function_exists('cs_employer_listing') ) {
                 include( 'views/cs_box.php' );
             } elseif ( $a['cs_employer_view'] == 'fancy' ) {
                 include( 'views/cs_fancy.php' );
-            }elseif ( $a['cs_employer_view'] == 'modern' ) {
+            } elseif ( $a['cs_employer_view'] == 'modern' ) {
                 include( 'views/cs_modern.php' );
             }
-            
+
             //   end employer view
             if ( $a['cs_employer_searchbox'] == 'yes' ) {
                 echo '</div>';

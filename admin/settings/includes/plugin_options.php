@@ -21,8 +21,6 @@ if (!function_exists('cs_settings_options_page')) {
 	    'extra_atr' => 'onclick="javascript:plugin_option_save(\'' . esc_js(admin_url('admin-ajax.php')) . '\');" ',
 	    'return' => true,
 	);
-
-
 	$cs_opt_hidden1_array = array(
 	    'id' => '',
 	    'std' => 'plugin_option_save',
@@ -594,6 +592,7 @@ if (!function_exists('cs_settings_option')) {
 	    "std" => "",
 	    "type" => "textarea",
 	);
+        $cs_setting_options = apply_filters('jobhunt_signup_terms_policy_backend_fields',$cs_setting_options);
 	$cs_setting_options[] = array(
 	    "type" => "col-right-text",
 	);
@@ -921,6 +920,24 @@ if (!function_exists('cs_settings_option')) {
 	    "hint_text" => esc_html__("Turn this switcher OFF to allow direct publishing of registered  employers without review / moderation. If this switch is ON, employers will be published after admin review / moderation", "jobhunt"),
 	    "id" => "employer_review_option",
 	    "std" => "on",
+	    "type" => "checkbox",
+	    "options" => $on_off_option
+	);
+        
+        $cs_setting_options[] = array("name" => esc_html__("Job Detail Contact Form ON/OFF", "jobhunt"),
+	    "desc" => "",
+	    "hint_text" => esc_html__("Turn this switcher OFF to hide contact form from job detail pages.", "jobhunt"),
+	    "id" => "job_detail_contact_form",
+	    "std" => "on",
+	    "type" => "checkbox",
+	    "options" => $on_off_option
+	);
+        
+        $cs_setting_options[] = array("name" => esc_html__("Allow in search & listing ON/OFF", "jobhunt"),
+	    "desc" => "",
+	    "hint_text" => esc_html__("Turn this switcher OFF to hide allow in search & listing field in user profile and signup forms.", "jobhunt"),
+	    "id" => "allow_in_search_user_switch",
+	    "std" => "off",
 	    "type" => "checkbox",
 	    "options" => $on_off_option
 	);

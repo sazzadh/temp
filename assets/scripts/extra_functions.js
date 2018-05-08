@@ -405,23 +405,23 @@ $("#postjobs, #editjob").on('click', '.cs-check-tabs', function (e) {
         if (!cs_ad_form[0].checkValidity()) {
             cs_form_validity = 'invalid';
             if ($(this).val() == '' || $(this).val() === null) {
-                if( $(this).attr('type') === 'text' || $(this).attr('type') === 'textarea' ){
+                if ($(this).attr('type') === 'text' || $(this).attr('type') === 'textarea') {
                     $(this).css({"border": "1px solid #ff0000"});
-                }else{
+                } else {
                     $(this).parent().css({"border": "1px solid #ff0000"});
                 }
-            }else{
-                if( $(this).attr('type') === 'text' || $(this).attr('type') === 'textarea' ){
+            } else {
+                if ($(this).attr('type') === 'text' || $(this).attr('type') === 'textarea') {
                     $(this).css({"border": "1px solid #e4e4e4"});
-                }else{
+                } else {
                     $(this).parent().css({"border": "1px solid #e4e4e4"});
                 }
             }
         } else {
             if ($(this).val() != '') {
-                if( $(this).attr('type') === 'text' || $(this).attr('type') === 'textarea' ){
+                if ($(this).attr('type') === 'text' || $(this).attr('type') === 'textarea') {
                     $(this).css({"border": "1px solid #e4e4e4"});
-                }else{
+                } else {
                     $(this).parent().css({"border": "1px solid #e4e4e4"});
                 }
             }
@@ -429,7 +429,7 @@ $("#postjobs, #editjob").on('click', '.cs-check-tabs', function (e) {
         }
     });
     if (cs_form_validity == 'valid') {
-        if( employer_status != '' ){
+        if (employer_status != '') {
             jQuery('#cs_alerts').html('<div class="cs-remove-msg error"><i class="icon-warning2"></i>' + employer_status + '</div>');
             classes = jQuery('#cs_alerts').attr('class');
             classes = classes + " active";
@@ -444,7 +444,7 @@ $("#postjobs, #editjob").on('click', '.cs-check-tabs', function (e) {
             $('.cs-post-job .tabs-content').find('.tabs').hide();
             $('.cs-post-job .tabs-content').find('div#' + active).show();
             return false;
-        }else{
+        } else {
             if (!jQuery(this).hasClass('cs-confrmation-tab') && !jQuery('.cs-post-job').hasClass('cs-prevent')) {
                 $('.cs-post-job .tabs-nav').find('li').removeClass('active');
                 if ($(this).hasClass('acc-submit')) {
@@ -696,20 +696,20 @@ $(document).ready(function ($) {
 
     /*
      * for selct boxes design and jquery implementation
-
-
-    if (jQuery('.chosen-select, .chosen-select-deselect, .chosen-select-no-single, .chosen-select-no-results, .chosen-select-width').length != '') {
-        var config = {
-            '.chosen-select': {width: "100%"},
-            '.chosen-select-deselect': {allow_single_deselect: true},
-            '.chosen-select-no-single': {disable_search_threshold: 10, width: "100%"},
-            '.chosen-select-no-results': {no_results_text: cs_vars.oops_nothing_found},
-            '.chosen-select-width': {width: "95%"}
-        }
-        for (var selector in config) {
-            jQuery(selector).chosen(config[selector]);
-        }
-    }
+     
+     
+     if (jQuery('.chosen-select, .chosen-select-deselect, .chosen-select-no-single, .chosen-select-no-results, .chosen-select-width').length != '') {
+     var config = {
+     '.chosen-select': {width: "100%"},
+     '.chosen-select-deselect': {allow_single_deselect: true},
+     '.chosen-select-no-single': {disable_search_threshold: 10, width: "100%"},
+     '.chosen-select-no-results': {no_results_text: cs_vars.oops_nothing_found},
+     '.chosen-select-width': {width: "95%"}
+     }
+     for (var selector in config) {
+     jQuery(selector).chosen(config[selector]);
+     }
+     }
      */
 });
 
@@ -922,7 +922,7 @@ function cs_ajax_job_packages(pkg_array) {
                 '&pkg_array=' + pkg_array +
                 '&wooC_current_page=' + wooC_current_page +
                 '&action=cs_ajax_job_packages';
-		console.log(dataString);
+        console.log(dataString);
         cs_data_loader_load('#packages');
         jQuery.ajax({
             type: "POST",
@@ -951,7 +951,7 @@ function cs_ajax_candidate_membership_packages(pkg_array) {
                 '&pkg_array=' + pkg_array +
                 '&wooC_current_page=' + wooC_current_page +
                 '&action=cs_ajax_candidate_membership_packages';
-       
+
         cs_data_loader_load('#packages');
         jQuery.ajax({
             type: "POST",
@@ -999,7 +999,7 @@ function cs_employer_change_password(pkg_array) {
 function cs_ajax_emp_job(admin_url, cs_uid, pkg_array) {
     "use strict";
     if (typeof (pkg_array) !== 'undefined' && pkg_array !== '') {
-        
+
         var dataString = 'cs_uid=' + cs_uid +
                 '&cs_posting=new&pkg_array=' + escape(pkg_array) +
                 '&action=cs_employer_post_job';
@@ -1046,6 +1046,46 @@ function cs_job_delete(admin_url, u_id) {
         return false;
     };
 }
+
+/*
+ * Job Delete Function
+ */
+function cs_remove_profile(admin_url, u_id, template) {
+    "use strict";
+    document.getElementById('id_confrmdiv').style.display = "block"; //this is the replace of this line
+    document.getElementById('id_truebtn').onclick = function () {
+        var dataString;
+        dataString = 'u_id=' + u_id + '&action=cs_remove_profile';
+        if (template == 'cand') {
+            cs_data_loader_load('#candidate-dashboard .main-cs-loader');
+        } else {
+            cs_data_loader_load('#employer-dashboard .main-cs-loader');
+        }
+        jQuery.ajax({
+            type: "POST",
+            url: admin_url,
+            data: dataString,
+            dataType: "json",
+            success: function (response) {
+                if (response.status == 'success') {
+                    document.location.href = response.redirecturl;
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+        document.getElementById('id_confrmdiv').style.display = "none";
+        return false;
+    };
+
+    document.getElementById('id_falsebtn').onclick = function () {
+        document.getElementById('id_confrmdiv').style.display = "none";
+        return false;
+    };
+}
+
+
+
 /*
  * Resume Delete Function
  */
@@ -1191,7 +1231,7 @@ function add_membership_pkg_to_list(admin_url, plugin_url)
             '&membership_pkg_dur=' + jQuery("#membership_pkg_dur").val() +
             '&action=cs_add_membership_pkg_to_list';
 
-    
+
     jQuery.ajax({
         type: "POST",
         url: admin_url,
@@ -1565,26 +1605,26 @@ function cs_googlecluster_map1(id, Latitude, Longitude, cluster_icon, marker_ico
 }
 
 
-function get_currency( price ){
-    var currency_sign   = cs_vars.currency_sign;
-    var currency_position   = cs_vars.currency_position;
-    var price_str   = '';
-    switch ( currency_position ) {
+function get_currency(price) {
+    var currency_sign = cs_vars.currency_sign;
+    var currency_position = cs_vars.currency_position;
+    var price_str = '';
+    switch (currency_position) {
         case 'left' :
             price_str = currency_sign + price;
-        break;
+            break;
         case 'right' :
             price_str = price + currency_sign;
-        break;
+            break;
         case 'left_space' :
             price_str = currency_sign + ' ' + price;
-        break;
+            break;
         case 'right_space' :
             price_str = price + ' ' + currency_sign;
-        break;
+            break;
     }
     return price_str;
 }
 jQuery(document).on('click', '.join-us', function (event) {
-   jQuery('#join-us .login-with .apply-without-login').remove();
+    jQuery('#join-us .login-with .apply-without-login').remove();
 });

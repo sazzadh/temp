@@ -141,6 +141,8 @@ if ( ! function_exists('jobcareer_pb_job_specialisms') ) {
                                     'modern' => esc_html__('Modern', 'jobhunt'),
                                     'grid' => esc_html__('Grid', 'jobhunt'),
                                     'fancy' => esc_html__('Fancy', 'jobhunt'),
+                                    'simple' => esc_html__('Simple', 'jobhunt'),
+                                    'grid-fancy' => esc_html__('Grid Fancy', 'jobhunt'),
                                 ),
                                 'return' => true,
                             ),

@@ -114,6 +114,7 @@ if ( ! function_exists('jobcareer_pb_jobs_search') ) {
                                     'modren' => esc_html__('Modern', 'jobhunt'),
                                     'classic' => esc_html__('Classic', 'jobhunt'),
                                     'fancy' => esc_html__('Fancy', 'jobhunt'),
+                                    'default_fancy' => esc_html__('Default Fancy', 'jobhunt'),
                                 ),
                                 'return' => true,
                             ),

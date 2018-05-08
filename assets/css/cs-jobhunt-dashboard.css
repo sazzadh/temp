@@ -1,0 +1,30 @@
+﻿body.page-template-page_candidate{ background: #f4f4f4; }
+
+
+/* Tab Featured Style Start */
+.widget-title strong {font-size:18px; color:#666; display:block;}
+.tab-featured .widget-title {text-align:center;}
+.tab-featured .cs-media img {border: 1px solid #f3f3f3; border-radius:3px; width:100%;}
+.tab-featured .cs-text {padding:25px 0 0; text-align:center;}
+.tab-featured .job-option {margin-bottom: 15px;}
+.tab-featured .job-option .jobs-type {margin-right: 5px;}
+.tab-featured .job-option .jobs-type:last-child {margin-right: 0;}
+.tab-featured .job-option a {border:1px solid; border-radius:3px; display:inline-block; line-height:normal; padding:8px 25px; text-decoration:none; outline:none;}
+.tab-featured .post-title {display:block; line-height:normal; margin-bottom:12px;}
+.tab-featured .post-title a {font-size:15px; color:#222b38; outline:none; text-decoration:none;}
+.tab-featured .post-options {margin-bottom:10px; line-height:normal;}
+.tab-featured .post-options li {display:inline-block; vertical-align:middle; margin:0 10px 5px 0; float:none; width:auto;}
+.tab-featured .post-options li:last-child {margin-right:0;}
+.tab-featured .post-options li span {font-size: 11px; color: #666; display: block; font-weight: 700;}
+.tab-featured .post-options li span i {font-size:  14px; margin-right:6px;}
+.tab-featured .browse-btn {border-radius: 3px; font-size: 14px; color: #fff; display: inline-block; line-height: normal; padding: 10px 16px; font-weight: 500;}
+.page-sidebar .tab-featured.widget:after {display: none;}
+/* Tab Featured Style End */
+
+/* Tab Newsletter Style Start */
+.jobs-tab-list .widget-newsletter .widget-title strong {font-size: 24px;}
+.jobs-tab-list .widget-newsletter .widget-title strong i {display: inline-block; line-height: normal; vertical-align: middle; margin-left: 10px;}
+.jobs-tab-list .widget-newsletter .fieldset form input[type="text"] {background-color: #fff; border: 1px solid #e7e7e7; border-radius:3px 0 0 3px; font-size:14px; padding-left: 20px;}
+.jobs-tab-list .widget-newsletter .fieldset form .submit-btn {background-color: #222b38 !important; border-radius: 0 3px 3px 0; font-size: 14px; padding: 0 25px; text-transform: capitalize;font-weight: 700;}
+/* Tab Newsletter Style End */
+
